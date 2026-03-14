@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 97</title>
+    <link rel="icon" type="image/png" href="pixel_logo.png">
+    <style>
+        @font-face {
+            font-family: 'Windows Retro';
+            src: url('retro.ttf') format('truetype');
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            user-select: none;
+            cursor: url('arrow.cur'), default;
+        }
+        body {
+            background: #000000;
+            font-family: 'Windows Retro', 'MS Sans Serif', 'Segoe UI', 'Arial', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        #top-left-area {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #useragent-display {
+            color: #c0c0c0;
+            font-size: 18px;
+            font-family: 'Windows Retro', 'MS Sans Serif', monospace;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        #click-text {
+            color: #c0c0c0;
+            font-size: 22px;
+            cursor: pointer;
+            text-decoration: underline dotted #808080;
+            display: none;
+            width: fit-content;
+        }
+        #click-text:hover {
+            color: #ffffff;
+            text-decoration: underline solid #ffffff;
+        }
+
+        #logo-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 150;
+            display: none;
+            background: transparent;
+        }
+        #logo-container img {
+            display: block;
+            max-width: 80vw;
+            max-height: 70vh;
+            image-rendering: pixelated;
+        }
+
+        #wallpaper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: none;
+            z-index: 50;
+        }
+        #wallpaper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        #taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #c0c0c0;
+            border-top: 4px solid #f0f0f0;
+            border-bottom: 4px solid #808080;
+            display: none;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 1000;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+        .start-btn {
+            display: flex;
+            align-items: center;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 12px 4px 6px;
+            height: 38px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 22px;
+            color: #000;
+            margin-right: 12px;
+            position: relative;
+        }
+        .start-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .start-btn img {
+            width: 30px;
+            height: 30px;
+            margin-right: 6px;
+            image-rendering: pixelated;
+        }
+        .taskbar-divider {
+            width: 4px;
+            height: 40px;
+            background: #808080;
+            border-left: 2px solid #f0f0f0;
+            border-right: 2px solid #404040;
+            margin: 0 4px;
+        }
+        #taskbar-apps {
+            display: flex;
+            gap: 4px;
+            height: 100%;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .taskbar-app {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 12px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+            max-width: 150px;
+        }
+        .taskbar-app:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .taskbar-app img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+        .taskbar-clock {
+            margin-left: auto;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 6px 16px;
+            font-size: 20px;
+            color: #000;
+            height: 38px;
+            display: flex;
+            align-items: center;
+        }
+
+        #start-menu {
+            position: absolute;
+            bottom: 54px;
+            left: 4px;
+            width: 300px;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 6px;
+            display: none;
+            z-index: 2000;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+        
+        .start-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            margin-bottom: 4px;
+            background: #000080;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .page-indicator {
+            font-size: 12px;
+        }
+        
+        .arrow-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .arrow-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .arrow-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #808080 #808080 #808080 #808080;
+        }
+        
+        .start-menu-page {
+            display: none;
+        }
+        
+        .start-menu-page.active {
+            display: block;
+        }
+        
+        .start-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            color: #000;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 16px;
+        }
+        .start-menu-item:hover {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .start-menu-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .window {
+            position: absolute;
+            min-width: 400px;
+            min-height: 300px;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: none;
+            flex-direction: column;
+            z-index: 500;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+        }
+        .window.active {
+            z-index: 1500;
+        }
+        .window.maximized {
+            width: 100% !important;
+            height: calc(100% - 50px) !important;
+            top: 0 !important;
+            left: 0 !important;
+            resize: none !important;
+        }
+        .title-bar {
+            background: linear-gradient(90deg, #FFA500, #0000FF);
+            color: #ffffff;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            cursor: grab;
+            font-size: 18px;
+            text-shadow: 1px 1px 0 #000;
+        }
+        .title-bar:active {
+            cursor: grabbing;
+        }
+        .title-bar img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            object-fit: contain;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .title-text {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .window-controls {
+            display: flex;
+            gap: 4px;
+        }
+        .window-controls span {
+            width: 24px;
+            height: 24px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            line-height: 1;
+            font-family: 'Courier New', monospace;
+        }
+        .window-controls span:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .window-controls span.close {
+            font-size: 20px;
+            font-weight: normal;
+            transform: scale(1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .window-content {
+            flex-grow: 1;
+            background: #c0c0c0;
+            margin: 4px;
+            border: 2px solid #808080;
+            overflow: auto;
+            position: relative;
+        }
+        .window-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+        }
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #c0c0c0;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            cursor: nwse-resize;
+            z-index: 10;
+        }
+
+        .calc-button {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 10px;
+            font-size: 18px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+        }
+        .calc-button:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .calc-button.zero {
+            grid-column: span 2;
+        }
+        .calc-display {
+            background: #ffffff;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 10px;
+            font-size: 24px;
+            font-family: 'Windows Retro', 'MS Sans Serif', monospace;
+            text-align: right;
+            color: #000;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Windows 98 Dropdown Styles */
+        .win98-select {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 8px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            color: #000;
+            cursor: pointer;
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+        }
+        
+        .win98-select:focus {
+            outline: none;
+        }
+        
+        .win98-select option {
+            background: #c0c0c0;
+            color: #000;
+            padding: 4px;
+        }
+        
+        .win98-label {
+            color: #000;
+            font-size: 12px;
+            margin-bottom: 2px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+
+        .spectrum-container {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            margin: 8px;
+            border: 2px solid #808080;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .spectrum-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #000;
+        }
+
+        .radio-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #c0c0c0;
+        }
+
+        .radio-toolbar {
+            background: #c0c0c0;
+            padding: 8px;
+            border-bottom: 2px solid #808080;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .camera-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        
+        .camera-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .camera-message {
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+
+        #desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .window, #start-menu, #taskbar, .start-btn {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-left-area">
+        <div id="useragent-display"></div>
+        <div id="click-text">Click to start Windows 97</div>
+    </div>
+    <div id="logo-container">
+        <img src="logo.png" alt="Windows 97 logo">
+    </div>
+    <div id="wallpaper">
+        <img src="wallpaper.png" alt="wallpaper">
+    </div>
+
+    <div id="desktop"></div>
+
+    <div id="taskbar">
+        <div class="start-btn">
+            <img src="pixel_logo.png" alt="win logo"> Start
+        </div>
+        <div class="taskbar-divider"></div>
+        <div id="taskbar-apps"></div>
+        <div class="taskbar-clock" id="clock">--:-- --</div>
+    </div>
+
+    <div id="start-menu">
+        <div class="start-menu-header">
+            <span class="page-indicator" id="page-indicator">Page 1/2</span>
+            <div style="display: flex; gap: 4px;">
+                <div class="arrow-btn" id="prev-page">◀</div>
+                <div class="arrow-btn" id="next-page">▶</div>
+            </div>
+        </div>
+        
+        <!-- Page 1 -->
+        <div class="start-menu-page active" id="page1">
+            <div class="start-menu-item" data-app="ie">
+                <img src="ie.png" alt="IE"> Internet Explorer
+            </div>
+            <div class="start-menu-item" data-app="calc">
+                <img src="calc.png" alt="Calc"> Calculator
+            </div>
+            <div class="start-menu-item" data-app="paint">
+                <img src="paint.png" alt="Paint"> Paint
+            </div>
+            <div class="start-menu-item" data-app="python">
+                <img src="python.png" alt="Python"> Python
+            </div>
+            <div class="start-menu-item" data-app="bryanchat">
+                <img src="bryanchat.png" alt="BryanChat"> BryanChat
+            </div>
+            <div class="start-menu-item" data-app="solitaire">
+                <img src="solitaire.png" alt="Solitaire"> Solitaire
+            </div>
+            <div class="start-menu-item" data-app="netflix">
+                <img src="netflix.png" alt="Netflix"> Netflix
+            </div>
+            <div class="start-menu-item" data-app="windows96">
+                <img src="windows96.png" alt="Windows 96"> Windows 96
+            </div>
+            <div class="start-menu-item" data-app="matrix">
+                <img src="matrix.png" alt="Matrix"> Matrix
+            </div>
+            <div class="start-menu-item" data-app="dvd">
+                <img src="dvd.png" alt="DVD Video"> DVD Video
+            </div>
+            <div class="start-menu-item" data-app="earth">
+                <img src="earth.gif" alt="Earth"> Earth
+            </div>
+            <div class="start-menu-item" data-app="pointer">
+                <img src="pointer.png" alt="Pointer"> Pointer Pointer
+            </div>
+            <div class="start-menu-item" data-app="minecraft">
+                <img src="minecraft.png" alt="Minecraft"> Minecraft
+            </div>
+        </div>
+        
+        <!-- Page 2 -->
+        <div class="start-menu-page" id="page2">
+            <div class="start-menu-item" data-app="pong">
+                <img src="pong.png" alt="Pong"> Pong
+            </div>
+            <div class="start-menu-item" data-app="aol">
+                <img src="aol.png" alt="AOL"> AOL
+            </div>
+            <div class="start-menu-item" data-app="netscape">
+                <img src="netscape.gif" alt="Netscape"> Netscape
+            </div>
+            <div class="start-menu-item" data-app="midiano">
+                <img src="midiano.png" alt="Midiano"> Midiano
+            </div>
+            <div class="start-menu-item" data-app="camera">
+                <img src="camera.png" alt="Camera"> Camera
+            </div>
+            <div class="start-menu-item" data-app="radio">
+                <img src="radio.png" alt="Radio"> Radio
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const uaDiv = document.getElementById('useragent-display');
+            uaDiv.textContent = navigator.userAgent;
+
+            const clickText = document.getElementById('click-text');
+            const topLeftArea = document.getElementById('top-left-area');
+            const logoContainer = document.getElementById('logo-container');
+            const wallpaperDiv = document.getElementById('wallpaper');
+            const taskbarDiv = document.getElementById('taskbar');
+
+            setTimeout(() => {
+                clickText.style.display = 'block';
+            }, 3000);
+
+            clickText.addEventListener('click', function startSequence() {
+                topLeftArea.style.display = 'none';
+                logoContainer.style.display = 'block';
+
+                setTimeout(() => {
+                    logoContainer.style.display = 'none';
+                    wallpaperDiv.style.display = 'block';
+                    taskbarDiv.style.display = 'flex';
+                }, 5000);
+            }, { once: true });
+
+            const clockEl = document.getElementById('clock');
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                clockEl.textContent = `${hours}:${minutes} ${ampm}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            const startBtn = document.querySelector('.start-btn');
+            const startMenu = document.getElementById('start-menu');
+            
+            startBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!startBtn.contains(e.target) && !startMenu.contains(e.target)) {
+                    startMenu.style.display = 'none';
+                }
+            });
+
+            // Page navigation
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            const pageIndicator = document.getElementById('page-indicator');
+            
+            let currentPage = 1;
+            
+            function updatePages() {
+                if (currentPage === 1) {
+                    page1.classList.add('active');
+                    page2.classList.remove('active');
+                    prevBtn.classList.add('disabled');
+                    nextBtn.classList.remove('disabled');
+                    pageIndicator.textContent = 'Page 1/2';
+                } else {
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                    prevBtn.classList.remove('disabled');
+                    nextBtn.classList.add('disabled');
+                    pageIndicator.textContent = 'Page 2/2';
+                }
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePages();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < 2) {
+                    currentPage++;
+                    updatePages();
+                }
+            });
+            
+            updatePages();
+
+            // Radio stations
+            const radioStations = {
+                'us': [
+                    { name: 'KISS FM', url: 'https://stream.kissfm.com/kissfm' },
+                    { name: 'NPR News', url: 'https://npr.stream' },
+                    { name: 'Classic Rock', url: 'https://classicrock.stream' }
+                ],
+                'uk': [
+                    { name: 'BBC Radio 1', url: 'https://stream.bbc.co.uk/radio1' },
+                    { name: 'Classic FM', url: 'https://classicfm.stream' }
+                ],
+                'fr': [
+                    { name: 'NRJ', url: 'https://nrj.stream' },
+                    { name: 'France Inter', url: 'https://franceinter.stream' }
+                ],
+                'jp': [
+                    { name: 'Tokyo FM', url: 'https://tokyofm.stream' },
+                    { name: 'J-Wave', url: 'https://jwave.stream' }
+                ],
+                'br': [
+                    { name: 'Jovem Pan', url: 'https://jovempan.stream' },
+                    { name: 'Band FM', url: 'https://bandfm.stream' }
+                ]
+            };
+
+            const apps = {
+                ie: { name: 'Internet Explorer', icon: 'ie.png', url: 'https://www.google.com' },
+                calc: { name: 'Calculator', icon: 'calc.png', url: 'about:blank' },
+                paint: { name: 'Paint', icon: 'paint.png', url: 'https://jspaint.app' },
+                python: { name: 'Python', icon: 'python.png', url: 'https://www.python.org' },
+                bryanchat: { name: 'BryanChat', icon: 'bryanchat.png', url: 'bryanchat.html' },
+                solitaire: { name: 'Solitaire', icon: 'solitaire.png', url: 'https://khang-nd.github.io/js-solitaire/' },
+                netflix: { name: 'Netflix', icon: 'netflix.png', url: 'https://www.netflix.com' },
+                windows96: { name: 'Windows 96', icon: 'windows96.png', url: 'https://windows96.net' },
+                matrix: { name: 'Matrix', icon: 'matrix.png', url: 'https://thematrix.webexpt.com/' },
+                dvd: { name: 'DVD Video', icon: 'dvd.png', url: 'https://bouncingdvdlogo.com' },
+                earth: { name: 'Earth', icon: 'earth.gif', url: 'https://sararasoulian.github.io/3D-Earth/' },
+                pointer: { name: 'Pointer Pointer', icon: 'pointer.png', url: 'https://pointerpointer.com' },
+                minecraft: { name: 'Minecraft', icon: 'minecraft.png', url: 'https://eaglercraft1-8.github.io/' },
+                pong: { name: 'Pong', icon: 'pong.png', url: 'pong.html' },
+                aol: { name: 'AOL', icon: 'aol.png', url: 'aol-bye.png' },
+                netscape: { name: 'Netscape', icon: 'netscape.gif', url: 'https://isp.netscape.com/' },
+                midiano: { name: 'Midiano', icon: 'midiano.png', url: 'https://app.midiano.com/' },
+                camera: { name: 'Camera', icon: 'camera.png', url: 'camera' },
+                radio: { name: 'Radio', icon: 'radio.png', url: 'radio' }
+            };
+
+            let windowCount = 0;
+            const taskbarApps = document.getElementById('taskbar-apps');
+            const desktop = document.getElementById('desktop');
+            let windows = [];
+
+            function createCameraWindow(content) {
+                const cameraContainer = document.createElement('div');
+                cameraContainer.className = 'camera-container';
+                
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        const video = document.createElement('video');
+                        video.className = 'camera-video';
+                        video.srcObject = stream;
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        cameraContainer.innerHTML = '';
+                        cameraContainer.appendChild(video);
+                    })
+                    .catch(() => {
+                        const message = document.createElement('div');
+                        message.className = 'camera-message';
+                        message.textContent = 'Please allow permission for Camera.';
+                        cameraContainer.appendChild(message);
+                    });
+                
+                content.appendChild(cameraContainer);
+            }
+
+            function createRadioWindow(content) {
+                const radioContainer = document.createElement('div');
+                radioContainer.className = 'radio-container';
+                
+                const toolbar = document.createElement('div');
+                toolbar.className = 'radio-toolbar';
+                
+                const countryLabel = document.createElement('div');
+                countryLabel.className = 'win98-label';
+                countryLabel.textContent = 'Country:';
+                
+                const countrySelect = document.createElement('select');
+                countrySelect.className = 'win98-select';
+                countrySelect.innerHTML = `
+                    <option value="us">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="fr">France</option>
+                    <option value="jp">Japan</option>
+                    <option value="br">Brazil</option>
+                `;
+                
+                const stationLabel = document.createElement('div');
+                stationLabel.className = 'win98-label';
+                stationLabel.textContent = 'Station:';
+                
+                const stationSelect = document.createElement('select');
+                stationSelect.className = 'win98-select';
+                
+                function updateStations(country) {
+                    stationSelect.innerHTML = '';
+                    const stations = radioStations[country] || [];
+                    stations.forEach(station => {
+                        const option = document.createElement('option');
+                        option.value = station.url;
+                        option.textContent = station.name;
+                        stationSelect.appendChild(option);
+                    });
+                }
+                
+                updateStations('us');
+                
+                countrySelect.addEventListener('change', () => {
+                    updateStations(countrySelect.value);
+                });
+                
+                toolbar.appendChild(countryLabel);
+                toolbar.appendChild(countrySelect);
+                toolbar.appendChild(stationLabel);
+                toolbar.appendChild(stationSelect);
+                
+                const spectrumContainer = document.createElement('div');
+                spectrumContainer.className = 'spectrum-container';
+                
+                const canvas = document.createElement('canvas');
+                canvas.className = 'spectrum-canvas';
+                canvas.width = 600;
+                canvas.height = 200;
+                spectrumContainer.appendChild(canvas);
+                
+                const ctx = canvas.getContext('2d');
+                let audioContext = null;
+                let analyser = null;
+                let source = null;
+                let audio = null;
+                let animationFrame = null;
+                
+                function drawSpectrum() {
+                    if (!analyser || !ctx) return;
+                    
+                    const bufferLength = analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    const barWidth = (canvas.width / bufferLength) * 2;
+                    let x = 0;
+                    
+                    for (let i = 0; i < bufferLength; i++) {
+                        const barHeight = dataArray[i] / 2;
+                        
+                        const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
+                        gradient.addColorStop(0, '#FFA500');
+                        gradient.addColorStop(1, '#0000FF');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                        
+                        x += barWidth + 1;
+                    }
+                    
+                    animationFrame = requestAnimationFrame(drawSpectrum);
+                }
+                
+                stationSelect.addEventListener('change', () => {
+                    if (animationFrame) {
+                        cancelAnimationFrame(animationFrame);
+                    }
+                    if (audio) {
+                        audio.pause();
+                        audio.src = '';
+                    }
+                    if (audioContext) {
+                        audioContext.close();
+                    }
+                    
+                    try {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        analyser = audioContext.createAnalyser();
+                        analyser.fftSize = 256;
+                        
+                        audio = new Audio(stationSelect.value);
+                        audio.crossOrigin = 'anonymous';
+                        
+                        source = audioContext.createMediaElementSource(audio);
+                        source.connect(analyser);
+                        analyser.connect(audioContext.destination);
+                        
+                        audio.play().catch(e => {
+                            console.error('Radio play failed - might need user interaction first');
+                        });
+                        drawSpectrum();
+                    } catch (e) {
+                        console.error('Radio error:', e);
+                    }
+                });
+                
+                radioContainer.appendChild(toolbar);
+                radioContainer.appendChild(spectrumContainer);
+                content.appendChild(radioContainer);
+            }
+
+            function createWindow(appId) {
+                const app = apps[appId];
+                if (!app) return;
+
+                const winId = `win-${windowCount++}`;
+                const win = document.createElement('div');
+                win.className = 'window';
+                win.id = winId;
+                win.style.top = `${50 + (windowCount * 20)}px`;
+                win.style.left = `${50 + (windowCount * 20)}px`;
+                win.style.width = '600px';
+                win.style.height = '400px';
+
+                const titleBar = document.createElement('div');
+                titleBar.className = 'title-bar';
+                titleBar.innerHTML = `
+                    <img src="${app.icon}" alt="" onerror="this.style.display='none'">
+                    <span class="title-text">${app.name}</span>
+                    <div class="window-controls">
+                        <span class="minimize">_</span>
+                        <span class="maximize">□</span>
+                        <span class="close">×</span>
+                    </div>
+                `;
+
+                const content = document.createElement('div');
+                content.className = 'window-content';
+                
+                if (appId === 'calc') {
+                    const calcDiv = document.createElement('div');
+                    calcDiv.style.padding = '10px';
+                    calcDiv.style.background = '#c0c0c0';
+                    calcDiv.style.height = '100%';
+                    calcDiv.style.display = 'flex';
+                    calcDiv.style.flexDirection = 'column';
+                    
+                    const display = document.createElement('div');
+                    display.className = 'calc-display';
+                    display.textContent = '0';
+                    calcDiv.appendChild(display);
+                    
+                    const buttonsGrid = document.createElement('div');
+                    buttonsGrid.style.display = 'grid';
+                    buttonsGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+                    buttonsGrid.style.gap = '5px';
+                    buttonsGrid.style.flexGrow = '1';
+                    
+                    const buttons = [
+                        '7', '8', '9', '/',
+                        '4', '5', '6', '*',
+                        '1', '2', '3', '-',
+                        '0', 'C', '=', '+'
+                    ];
+                    
+                    buttons.forEach(btn => {
+                        const button = document.createElement('div');
+                        button.className = 'calc-button';
+                        if (btn === '0') button.classList.add('zero');
+                        button.textContent = btn;
+                        
+                        button.addEventListener('click', () => {
+                            if (btn === 'C') {
+                                display.textContent = '0';
+                            } else if (btn === '=') {
+                                try {
+                                    display.textContent = eval(display.textContent);
+                                } catch {
+                                    display.textContent = 'Error';
+                                }
+                            } else if (btn === '/' || btn === '*' || btn === '-' || btn === '+') {
+                                if (display.textContent !== 'Error') {
+                                    display.textContent += btn;
+                                }
+                            } else {
+                                if (display.textContent === '0' || display.textContent === 'Error') {
+                                    display.textContent = btn;
+                                } else {
+                                    display.textContent += btn;
+                                }
+                            }
+                        });
+                        
+                        buttonsGrid.appendChild(button);
+                    });
+                    
+                    calcDiv.appendChild(buttonsGrid);
+                    content.appendChild(calcDiv);
+                } else if (appId === 'ie') {
+                    const browserDiv = document.createElement('div');
+                    browserDiv.style.height = '100%';
+                    browserDiv.style.display = 'flex';
+                    browserDiv.style.flexDirection = 'column';
+                    
+                    let history = JSON.parse(localStorage.getItem('ie_history')) || ['https://www.google.com'];
+                    let historyIndex = history.length - 1;
+                    
+                    const toolbar = document.createElement('div');
+                    toolbar.style.background = '#c0c0c0';
+                    toolbar.style.padding = '4px';
+                    toolbar.style.borderBottom = '2px solid #808080';
+                    toolbar.style.display = 'flex';
+                    toolbar.style.gap = '4px';
+                    toolbar.style.alignItems = 'center';
+                    toolbar.style.flexWrap = 'wrap';
+                    
+                    const undoBtn = document.createElement('button');
+                    undoBtn.innerHTML = '↩ Undo';
+                    undoBtn.style.background = '#c0c0c0';
+                    undoBtn.style.border = '2px solid';
+                    undoBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    undoBtn.style.padding = '2px 6px';
+                    undoBtn.style.cursor = 'pointer';
+                    undoBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    undoBtn.style.fontSize = '12px';
+                    
+                    const redoBtn = document.createElement('button');
+                    redoBtn.innerHTML = '↪ Redo';
+                    redoBtn.style.background = '#c0c0c0';
+                    redoBtn.style.border = '2px solid';
+                    redoBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    redoBtn.style.padding = '2px 6px';
+                    redoBtn.style.cursor = 'pointer';
+                    redoBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    redoBtn.style.fontSize = '12px';
+                    
+                    const addressLabel = document.createElement('span');
+                    addressLabel.innerHTML = 'Address:';
+                    addressLabel.style.fontFamily = 'Windows Retro, sans-serif';
+                    addressLabel.style.fontSize = '12px';
+                    addressLabel.style.marginLeft = '4px';
+                    
+                    const addressInput = document.createElement('input');
+                    addressInput.type = 'text';
+                    addressInput.value = history[historyIndex];
+                    addressInput.style.flex = '1';
+                    addressInput.style.minWidth = '200px';
+                    addressInput.style.background = '#ffffff';
+                    addressInput.style.border = '2px solid';
+                    addressInput.style.borderColor = '#808080 #ffffff #ffffff #808080';
+                    addressInput.style.padding = '2px 4px';
+                    addressInput.style.fontFamily = 'Windows Retro, sans-serif';
+                    addressInput.style.fontSize = '12px';
+                    
+                    const goBtn = document.createElement('button');
+                    goBtn.innerHTML = 'Go';
+                    goBtn.style.background = '#c0c0c0';
+                    goBtn.style.border = '2px solid';
+                    goBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    goBtn.style.padding = '2px 12px';
+                    goBtn.style.cursor = 'pointer';
+                    goBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    goBtn.style.fontSize = '12px';
+                    
+                    const historyBtn = document.createElement('button');
+                    historyBtn.innerHTML = '📜 History';
+                    historyBtn.style.background = '#c0c0c0';
+                    historyBtn.style.border = '2px solid';
+                    historyBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    historyBtn.style.padding = '2px 8px';
+                    historyBtn.style.cursor = 'pointer';
+                    historyBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    historyBtn.style.fontSize = '12px';
+                    
+                    toolbar.appendChild(undoBtn);
+                    toolbar.appendChild(redoBtn);
+                    toolbar.appendChild(addressLabel);
+                    toolbar.appendChild(addressInput);
+                    toolbar.appendChild(goBtn);
+                    toolbar.appendChild(historyBtn);
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.src = history[historyIndex];
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation';
+                    iframe.style.flex = '1';
+                    iframe.style.width = '100%';
+                    iframe.style.border = 'none';
+                    iframe.style.background = '#ffffff';
+                    
+                    const historyDropdown = document.createElement('div');
+                    historyDropdown.style.display = 'none';
+                    historyDropdown.style.position = 'absolute';
+                    historyDropdown.style.background = '#c0c0c0';
+                    historyDropdown.style.border = '2px solid';
+                    historyDropdown.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    historyDropdown.style.maxHeight = '200px';
+                    historyDropdown.style.overflowY = 'auto';
+                    historyDropdown.style.zIndex = '10000';
+                    historyDropdown.style.width = '300px';
+                    historyDropdown.style.padding = '4px';
+                    
+                    function updateHistoryDropdown() {
+                        historyDropdown.innerHTML = '';
+                        history.slice().reverse().forEach((url, index) => {
+                            const item = document.createElement('div');
+                            item.textContent = url;
+                            item.style.padding = '4px 8px';
+                            item.style.cursor = 'pointer';
+                            item.style.fontFamily = 'Windows Retro, sans-serif';
+                            item.style.fontSize = '12px';
+                            item.style.whiteSpace = 'nowrap';
+                            item.style.overflow = 'hidden';
+                            item.style.textOverflow = 'ellipsis';
+                            item.addEventListener('mouseenter', () => {
+                                item.style.background = '#000080';
+                                item.style.color = '#ffffff';
+                            });
+                            item.addEventListener('mouseleave', () => {
+                                item.style.background = 'transparent';
+                                item.style.color = '#000000';
+                            });
+                            item.addEventListener('click', () => {
+                                const actualIndex = history.length - 1 - index;
+                                historyIndex = actualIndex;
+                                addressInput.value = history[historyIndex];
+                                iframe.src = history[historyIndex];
+                                historyDropdown.style.display = 'none';
+                            });
+                            historyDropdown.appendChild(item);
+                        });
+                    }
+                    updateHistoryDropdown();
+                    
+                    browserDiv.style.position = 'relative';
+                    browserDiv.appendChild(toolbar);
+                    browserDiv.appendChild(iframe);
+                    browserDiv.appendChild(historyDropdown);
+                    
+                    function navigate(url) {
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        iframe.src = url;
+                        addressInput.value = url;
+                        
+                        if (history[history.length - 1] !== url) {
+                            history.push(url);
+                            historyIndex = history.length - 1;
+                            localStorage.setItem('ie_history', JSON.stringify(history));
+                            updateHistoryDropdown();
+                        }
+                    }
+                    
+                    undoBtn.addEventListener('click', () => {
+                        if (historyIndex > 0) {
+                            historyIndex--;
+                            addressInput.value = history[historyIndex];
+                            iframe.src = history[historyIndex];
+                        }
+                    });
+                    
+                    redoBtn.addEventListener('click', () => {
+                        if (historyIndex < history.length - 1) {
+                            historyIndex++;
+                            addressInput.value = history[historyIndex];
+                            iframe.src = history[historyIndex];
+                        }
+                    });
+                    
+                    goBtn.addEventListener('click', () => {
+                        navigate(addressInput.value);
+                    });
+                    
+                    addressInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            navigate(addressInput.value);
+                        }
+                    });
+                    
+                    historyBtn.addEventListener('click', () => {
+                        const rect = historyBtn.getBoundingClientRect();
+                        const winRect = win.getBoundingClientRect();
+                        historyDropdown.style.left = (rect.left - winRect.left) + 'px';
+                        historyDropdown.style.top = (rect.bottom - winRect.top) + 'px';
+                        historyDropdown.style.display = historyDropdown.style.display === 'none' ? 'block' : 'none';
+                    });
+                    
+                    document.addEventListener('click', (e) => {
+                        if (!historyBtn.contains(e.target) && !historyDropdown.contains(e.target)) {
+                            historyDropdown.style.display = 'none';
+                        }
+                    });
+                    
+                    content.appendChild(browserDiv);
+                } else if (appId === 'minecraft') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = 'https://eaglercraft1-8.github.io/';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation';
+                    content.appendChild(iframe);
+                } else if (appId === 'aol') {
+                    const img = document.createElement('img');
+                    img.src = 'aol-bye.png';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    img.style.background = '#000';
+                    content.appendChild(img);
+                } else if (appId === 'camera') {
+                    createCameraWindow(content);
+                } else if (appId === 'radio') {
+                    createRadioWindow(content);
+                } else {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = app.url;
+                    
+                    if (appId === 'python' || appId === 'paint' || appId === 'solitaire' || 
+                        appId === 'netflix' || appId === 'windows96' || appId === 'dvd' || 
+                        appId === 'matrix' || appId === 'earth' || appId === 'pointer' || 
+                        appId === 'pong' || appId === 'midiano' || appId === 'netscape') {
+                        iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation';
+                    }
+                    
+                    content.appendChild(iframe);
+                }
+
+                win.appendChild(titleBar);
+                win.appendChild(content);
+
+                const resizeHandle = document.createElement('div');
+                resizeHandle.className = 'resize-handle';
+                win.appendChild(resizeHandle);
+
+                desktop.appendChild(win);
+                
+                let isDragging = false;
+                let offsetX, offsetY;
+
+                titleBar.addEventListener('mousedown', (e) => {
+                    if (e.target.classList.contains('window-controls') || e.target.parentElement.classList.contains('window-controls')) return;
+                    isDragging = true;
+                    offsetX = e.clientX - win.offsetLeft;
+                    offsetY = e.clientY - win.offsetTop;
+                    win.style.cursor = 'grabbing';
+                    bringToFront(win);
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    let newX = e.clientX - offsetX;
+                    let newY = e.clientY - offsetY;
+                    newX = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newX));
+                    newY = Math.max(0, Math.min(window.innerHeight - 50 - win.offsetHeight, newY));
+                    win.style.left = newX + 'px';
+                    win.style.top = newY + 'px';
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    win.style.cursor = 'default';
+                });
+
+                let isResizing = false;
+                resizeHandle.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    isResizing = true;
+                    bringToFront(win);
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isResizing) return;
+                    const newWidth = e.clientX - win.offsetLeft;
+                    const newHeight = e.clientY - win.offsetTop;
+                    win.style.width = Math.max(300, Math.min(window.innerWidth - win.offsetLeft, newWidth)) + 'px';
+                    win.style.height = Math.max(200, Math.min(window.innerHeight - 50 - win.offsetTop, newHeight)) + 'px';
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isResizing = false;
+                });
+
+                const closeBtn = win.querySelector('.close');
+                const minimizeBtn = win.querySelector('.minimize');
+                const maximizeBtn = win.querySelector('.maximize');
+
+                closeBtn.addEventListener('click', () => {
+                    win.remove();
+                    const taskItem = document.getElementById(`task-${winId}`);
+                    if (taskItem) taskItem.remove();
+                });
+
+                minimizeBtn.addEventListener('click', () => {
+                    win.style.display = 'none';
+                });
+
+                maximizeBtn.addEventListener('click', () => {
+                    win.classList.toggle('maximized');
+                });
+
+                const taskItem = document.createElement('div');
+                taskItem.className = 'taskbar-app';
+                taskItem.id = `task-${winId}`;
+                taskItem.innerHTML = `<img src="${app.icon}" alt="" onerror="this.style.display='none'"> ${app.name}`;
+                taskItem.addEventListener('click', () => {
+                    if (win.style.display === 'none') {
+                        win.style.display = 'flex';
+                        bringToFront(win);
+                    } else {
+                        bringToFront(win);
+                    }
+                });
+                taskbarApps.appendChild(taskItem);
+
+                win.style.display = 'flex';
+                bringToFront(win);
+                
+                windows.push(win);
+            }
+
+            function bringToFront(win) {
+                windows.forEach(w => w.classList.remove('active'));
+                win.classList.add('active');
+                win.style.zIndex = 1500 + windows.indexOf(win);
+            }
+
+            document.querySelectorAll('.start-menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const app = item.dataset.app;
+                    createWindow(app);
+                    startMenu.style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('dragstart', (e) => e.preventDefault());
+            });
+        })();
+    </script>
+    
+    <!-- STARTUP SOUND -->
+    <script>
+        (function() {
+            const checkDesktop = setInterval(() => {
+                const wallpaper = document.getElementById('wallpaper');
+                const taskbar = document.getElementById('taskbar');
+                if (wallpaper && taskbar && 
+                    wallpaper.style.display === 'block' && 
+                    taskbar.style.display === 'flex') {
+                    clearInterval(checkDesktop);
+                    new Audio('startup.mp3').play().catch(() => {});
+                }
+            }, 100);
+        })();
+        
+    console.log('⠀⠀⠀⠀⠀⠆⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠐⢀⡙⠴⢖⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠠⠀⠀⠀⣤⠘⢛⢻⣿⣧⣿⣿⣿⣿⣿⣿⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠠⠆⣀⠁⠤⠄⣘⠊⠦⢴⣿⣿⠉⠉⠉⣹⣿⠟⠻⢿⣿⣦⡀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⢀⠉⠤⠄⣈⡘⠐⢡⣿⣿⠇⠀⠀⢠⣿⡏⠀⠀⠀⢸⣿⠁⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⡈⠠⠄⡈⠉⠽⠿⣿⣿⠿⠿⠿⣾⣿⣿⣤⣀⠀⣼⣿⡇⠀⠀⠀⠀⠀');
+    console.log('⠰⠀⠀⠀⠶⠀⠀⠀⠁⢀⣿⣿⠁⠀⠀⢸⣿⠏⠹⢿⣿⣿⡿⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠋⣤⣄⣈⡈⠔⢰⣿⣿⠀⠀⠀⢠⣿⠃⠀⠀⠀⣼⣿⠃⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠘⠛⠿⠿⣿⣿⣿⣿⣷⣶⣿⣇⡀⠀⠀⣼⣿⠃⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠙⠛⠿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    </script>
+
+    <!-- Required assets -->
+    <noscript>
+        <div style="color: white; background: black; font-family: monospace; padding: 20px;">
+            <div style="color: #ff0000; font-size: 24px; margin-bottom: 10px;">⛔ JAVASCRIPT REQUIRED</div>
+            <div style="color: #ff5555; margin-bottom: 15px;">Windows 97 cannot run without JavaScript.</div>
+            <div style="color: #ffff00; margin-bottom: 5px;">Console DevTools Error:</div>
+            <div style="color: #ff8888; background: #330000; padding: 10px; border-left: 4px solid red;">
+                Uncaught ReferenceError: Windows 97 is not defined<br>
+                at (sorry, you need JS)<br>
+                at HTMLDocument (turn on scripts)<br>
+                at : (why would you do this)
+            </div>
+            <div style="color: #888; margin-top: 20px; font-size: 12px;">
+                Please enable JavaScript to experience the full chaos.
+            </div>
+        </div>
+    </noscript>
+</body>
+</html>
