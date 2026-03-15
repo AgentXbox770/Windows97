@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows 97</title>
-    <link rel="icon" type="image/png" href="logo.ico">
     <meta name="title" content="Windows 97">
-<meta name="description" content="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36">
-<link rel="icon" href="logo.ico" type="image/x-icon">
-<meta property="og:title" content="Windows97">
-<meta property="og:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows97">
-<meta name="twitter:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
+    <meta name="description" content="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <meta property="og:title" content="Windows97">
+    <meta property="og:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Windows97">
+    <meta name="twitter:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
     <style>
         @font-face {
             font-family: 'Windows Retro';
@@ -507,6 +506,32 @@
             font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
         }
 
+        /* Shaking text animation */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        .shaking {
+            animation: shake 0.1s infinite;
+        }
+
+        .static-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
         #desktop {
             position: absolute;
             top: 0;
@@ -615,6 +640,9 @@
             </div>
             <div class="start-menu-item" data-app="radio">
                 <img src="radio.png" alt="Radio"> Radio
+            </div>
+            <div class="start-menu-item" data-app="chaos">
+                <div style="width:28px;height:28px;background:#000;border:2px solid #808080;"></div> █▓▒░ CHAOS ░▒▓█
             </div>
         </div>
     </div>
@@ -737,6 +765,17 @@
                 ]
             };
 
+            // Chaos app titles
+            const chaosTitles = [
+                '=π|√|÷π||',
+                '=¥™¥=¥°¥=`',
+                '=|^|{π`=|^',
+                '✓®%™^%|✓©',
+                'shszjsdheh',
+                '+€-3_€!&€7-',
+                'bdhdhBh+_-€-_+-=°$|=°¥✓¥'
+            ];
+
             const apps = {
                 ie: { name: 'Internet Explorer', icon: 'ie.png', url: 'https://www.google.com' },
                 calc: { name: 'Calculator', icon: 'calc.png', url: 'about:blank' },
@@ -756,7 +795,8 @@
                 netscape: { name: 'Netscape', icon: 'netscape.gif', url: 'https://isp.netscape.com/' },
                 midiano: { name: 'Midiano', icon: 'midiano.png', url: 'https://app.midiano.com/' },
                 camera: { name: 'Camera', icon: 'camera.png', url: 'camera' },
-                radio: { name: 'Radio', icon: 'radio.png', url: 'radio' }
+                radio: { name: 'Radio', icon: 'radio.png', url: 'radio' },
+                chaos: { name: 'CHAOS', icon: null, url: 'chaos' }
             };
 
             let windowCount = 0;
@@ -921,6 +961,26 @@
                 content.appendChild(radioContainer);
             }
 
+            function createChaosWindow(content) {
+                // Play static sound
+                try {
+                    const audio = new Audio('static.mp3');
+                    audio.loop = true;
+                    audio.play().catch(() => {});
+                    
+                    // Store audio on window to stop when closed
+                    content.chaosAudio = audio;
+                } catch (e) {}
+                
+                const img = document.createElement('img');
+                img.src = 'static.gif';
+                img.className = 'static-img';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                content.appendChild(img);
+            }
+
             function createWindow(appId) {
                 const app = apps[appId];
                 if (!app) return;
@@ -936,15 +996,43 @@
 
                 const titleBar = document.createElement('div');
                 titleBar.className = 'title-bar';
-                titleBar.innerHTML = `
-                    <img src="${app.icon}" alt="" onerror="this.style.display='none'">
-                    <span class="title-text">${app.name}</span>
-                    <div class="window-controls">
-                        <span class="minimize">_</span>
-                        <span class="maximize">□</span>
-                        <span class="close">×</span>
-                    </div>
+                
+                // For chaos app, use black square and shaking text
+                if (appId === 'chaos') {
+                    const iconDiv = document.createElement('div');
+                    iconDiv.style.width = '20px';
+                    iconDiv.style.height = '20px';
+                    iconDiv.style.background = '#000';
+                    iconDiv.style.border = '2px solid #808080';
+                    iconDiv.style.marginRight = '8px';
+                    titleBar.appendChild(iconDiv);
+                    
+                    const titleText = document.createElement('span');
+                    titleText.className = 'title-text shaking';
+                    
+                    // Update title every 0.2 seconds
+                    let titleIndex = 0;
+                    setInterval(() => {
+                        titleText.textContent = chaosTitles[titleIndex % chaosTitles.length];
+                        titleIndex++;
+                    }, 200);
+                    
+                    titleBar.appendChild(titleText);
+                } else {
+                    titleBar.innerHTML = `
+                        <img src="${app.icon}" alt="" onerror="this.style.display='none'">
+                        <span class="title-text">${app.name}</span>
+                    `;
+                }
+                
+                const controls = document.createElement('div');
+                controls.className = 'window-controls';
+                controls.innerHTML = `
+                    <span class="minimize">_</span>
+                    <span class="maximize">□</span>
+                    <span class="close">×</span>
                 `;
+                titleBar.appendChild(controls);
 
                 const content = document.createElement('div');
                 content.className = 'window-content';
@@ -1224,6 +1312,8 @@
                     createCameraWindow(content);
                 } else if (appId === 'radio') {
                     createRadioWindow(content);
+                } else if (appId === 'chaos') {
+                    createChaosWindow(content);
                 } else {
                     const iframe = document.createElement('iframe');
                     iframe.src = app.url;
@@ -1298,6 +1388,11 @@
                 const maximizeBtn = win.querySelector('.maximize');
 
                 closeBtn.addEventListener('click', () => {
+                    // Stop chaos audio if playing
+                    if (content.chaosAudio) {
+                        content.chaosAudio.pause();
+                        content.chaosAudio = null;
+                    }
                     win.remove();
                     const taskItem = document.getElementById(`task-${winId}`);
                     if (taskItem) taskItem.remove();
@@ -1314,7 +1409,13 @@
                 const taskItem = document.createElement('div');
                 taskItem.className = 'taskbar-app';
                 taskItem.id = `task-${winId}`;
-                taskItem.innerHTML = `<img src="${app.icon}" alt="" onerror="this.style.display='none'"> ${app.name}`;
+                
+                if (appId === 'chaos') {
+                    taskItem.innerHTML = `<div style="width:24px;height:24px;background:#000;border:2px solid #808080;"></div> █▓▒░ CHAOS ░▒▓█`;
+                } else {
+                    taskItem.innerHTML = `<img src="${app.icon}" alt="" onerror="this.style.display='none'"> ${app.name}`;
+                }
+                
                 taskItem.addEventListener('click', () => {
                     if (win.style.display === 'none') {
                         win.style.display = 'flex';
@@ -1381,22 +1482,9 @@
     console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
     </script>
 
-    <!-- Required assets -->
+    <!-- Black screen for noscript -->
     <noscript>
-        <div style="color: white; background: black; font-family: monospace; padding: 20px;">
-            <div style="color: #ff0000; font-size: 24px; margin-bottom: 10px;">⛔ JAVASCRIPT REQUIRED</div>
-            <div style="color: #ff5555; margin-bottom: 15px;">Windows 97 cannot run without JavaScript.</div>
-            <div style="color: #ffff00; margin-bottom: 5px;">Console DevTools Error:</div>
-            <div style="color: #ff8888; background: #330000; padding: 10px; border-left: 4px solid red;">
-                Uncaught ReferenceError: Windows 97 is not defined<br>
-                at (sorry, you need JS)<br>
-                at HTMLDocument (turn on scripts)<br>
-                at : (why would you do this)
-            </div>
-            <div style="color: #888; margin-top: 20px; font-size: 12px;">
-                Please enable JavaScript to experience the full chaos.
-            </div>
-        </div>
+        <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999;"></div>
     </noscript>
 </body>
-</html>
+        </html>
