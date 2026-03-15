@@ -92,6 +92,7 @@
             background: #000000;
             display: none;
             z-index: 50;
+            transition: filter 0.3s;
         }
         #wallpaper img {
             width: 100%;
@@ -532,6 +533,120 @@
             image-rendering: pixelated;
         }
 
+        /* Settings App Styles */
+        .settings-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #c0c0c0;
+            padding: 10px;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            gap: 2px;
+            border-bottom: 2px solid #808080;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .settings-tab {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 5px 15px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .settings-tab.active {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #000080 #000080 #ffffff;
+        }
+        
+        .preview-square {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .wallpaper-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 5px;
+            border: 2px solid #808080;
+            background: #ffffff;
+        }
+        
+        .wallpaper-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .wallpaper-item.selected {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #000080 #000080 #ffffff;
+        }
+        
+        .wallpaper-item img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        
+        .upload-btn {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 8px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .upload-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .theme-section {
+            margin-top: 10px;
+        }
+        
+        .theme-label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
         #desktop {
             position: absolute;
             top: 0;
@@ -644,6 +759,9 @@
             <div class="start-menu-item" data-app="unknown">
                 <div style="width:28px;height:28px;background:#000;border:2px solid #808080;"></div> <span class="unknown-title">=π|√|÷π||</span>
             </div>
+            <div class="start-menu-item" data-app="settings">
+                <img src="settings.png" alt="Settings"> Settings
+            </div>
         </div>
     </div>
 
@@ -656,6 +774,7 @@
             const topLeftArea = document.getElementById('top-left-area');
             const logoContainer = document.getElementById('logo-container');
             const wallpaperDiv = document.getElementById('wallpaper');
+            const wallpaperImg = wallpaperDiv.querySelector('img');
             const taskbarDiv = document.getElementById('taskbar');
 
             setTimeout(() => {
@@ -670,6 +789,22 @@
                     logoContainer.style.display = 'none';
                     wallpaperDiv.style.display = 'block';
                     taskbarDiv.style.display = 'flex';
+                    
+                    // Load saved wallpaper and theme
+                    const savedWallpaper = localStorage.getItem('win97_wallpaper');
+                    const savedTheme = localStorage.getItem('win97_theme');
+                    
+                    if (savedWallpaper) {
+                        wallpaperImg.src = savedWallpaper;
+                    }
+                    
+                    if (savedTheme === 'Dark') {
+                        document.body.style.background = '#111';
+                        wallpaperDiv.style.filter = 'brightness(0.7)';
+                    } else if (savedTheme === 'Matrix') {
+                        document.body.style.background = '#000';
+                        wallpaperDiv.style.filter = 'hue-rotate(90deg) brightness(0.8)';
+                    }
                 }, 5000);
             }, { once: true });
 
@@ -786,6 +921,18 @@
                 }, 200);
             }
 
+            // Wallpaper list for settings
+            const wallpaperList = [
+                { name: 'wallpaper.png (default)', file: 'wallpaper.png' },
+                { name: 'shutdown.png', file: 'shutdown.png' },
+                { name: 'msdos.png', file: 'msdos.png' },
+                { name: 'bliss.png', file: 'bliss.png' },
+                { name: 'bliss_cooler.png', file: 'bliss_cooler.png' },
+                { name: 'space.png', file: 'space.png' },
+                { name: 'coding.png', file: 'coding.png' },
+                { name: 'js.png', file: 'js.png' }
+            ];
+
             const apps = {
                 ie: { name: 'Internet Explorer', icon: 'ie.png', url: 'https://www.google.com' },
                 calc: { name: 'Calculator', icon: 'calc.png', url: 'about:blank' },
@@ -806,7 +953,8 @@
                 midiano: { name: 'Midiano', icon: 'midiano.png', url: 'https://app.midiano.com/' },
                 camera: { name: 'Camera', icon: 'camera.png', url: 'camera' },
                 radio: { name: 'Radio', icon: 'radio.png', url: 'radio' },
-                unknown: { name: '=π|√|÷π||', icon: null, url: 'unknown' }
+                unknown: { name: '=π|√|÷π||', icon: null, url: 'unknown' },
+                settings: { name: 'Settings', icon: 'settings.png', url: 'settings' }
             };
 
             let windowCount = 0;
@@ -991,6 +1139,139 @@
                 content.appendChild(img);
             }
 
+            function createSettingsWindow(content) {
+                const container = document.createElement('div');
+                container.className = 'settings-container';
+                
+                // Tabs
+                const tabs = document.createElement('div');
+                tabs.className = 'settings-tabs';
+                
+                const personalizationTab = document.createElement('div');
+                personalizationTab.className = 'settings-tab active';
+                personalizationTab.textContent = 'Personalization';
+                
+                tabs.appendChild(personalizationTab);
+                container.appendChild(tabs);
+                
+                // Preview square
+                const previewSquare = document.createElement('div');
+                previewSquare.className = 'preview-square';
+                
+                const previewImg = document.createElement('img');
+                previewImg.className = 'preview-image';
+                previewImg.src = wallpaperImg.src;
+                previewSquare.appendChild(previewImg);
+                container.appendChild(previewSquare);
+                
+                // Wallpaper list
+                const wallpaperListDiv = document.createElement('div');
+                wallpaperListDiv.className = 'wallpaper-list';
+                
+                wallpaperList.forEach((wallpaper, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'wallpaper-item';
+                    if (wallpaperImg.src.includes(wallpaper.file)) {
+                        item.classList.add('selected');
+                    }
+                    
+                    const icon = document.createElement('img');
+                    icon.src = 'picture.png';
+                    icon.alt = '';
+                    
+                    const name = document.createElement('span');
+                    name.textContent = wallpaper.name;
+                    
+                    item.appendChild(icon);
+                    item.appendChild(name);
+                    
+                    item.addEventListener('click', () => {
+                        document.querySelectorAll('.wallpaper-item').forEach(w => w.classList.remove('selected'));
+                        item.classList.add('selected');
+                        previewImg.src = wallpaper.file;
+                        wallpaperImg.src = wallpaper.file;
+                        localStorage.setItem('win97_wallpaper', wallpaper.file);
+                    });
+                    
+                    wallpaperListDiv.appendChild(item);
+                });
+                
+                container.appendChild(wallpaperListDiv);
+                
+                // Upload button
+                const uploadBtn = document.createElement('div');
+                uploadBtn.className = 'upload-btn';
+                uploadBtn.textContent = 'Upload Image';
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            previewImg.src = event.target.result;
+                            wallpaperImg.src = event.target.result;
+                            localStorage.setItem('win97_wallpaper', event.target.result);
+                            
+                            document.querySelectorAll('.wallpaper-item').forEach(w => w.classList.remove('selected'));
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                uploadBtn.addEventListener('click', () => {
+                    fileInput.click();
+                });
+                
+                container.appendChild(uploadBtn);
+                container.appendChild(fileInput);
+                
+                // Theme section
+                const themeSection = document.createElement('div');
+                themeSection.className = 'theme-section';
+                
+                const themeLabel = document.createElement('div');
+                themeLabel.className = 'win98-label';
+                themeLabel.textContent = 'Theme:';
+                
+                const themeSelect = document.createElement('select');
+                themeSelect.className = 'win98-select';
+                themeSelect.innerHTML = `
+                    <option value="Default">Default</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Matrix">Matrix</option>
+                `;
+                
+                const savedTheme = localStorage.getItem('win97_theme') || 'Default';
+                themeSelect.value = savedTheme;
+                
+                themeSelect.addEventListener('change', () => {
+                    const theme = themeSelect.value;
+                    localStorage.setItem('win97_theme', theme);
+                    
+                    if (theme === 'Dark') {
+                        document.body.style.background = '#111';
+                        wallpaperDiv.style.filter = 'brightness(0.7)';
+                    } else if (theme === 'Matrix') {
+                        document.body.style.background = '#000';
+                        wallpaperDiv.style.filter = 'hue-rotate(90deg) brightness(0.8)';
+                    } else {
+                        document.body.style.background = '#000';
+                        wallpaperDiv.style.filter = 'none';
+                    }
+                });
+                
+                themeSection.appendChild(themeLabel);
+                themeSection.appendChild(themeSelect);
+                container.appendChild(themeSection);
+                
+                content.appendChild(container);
+            }
+
             function createWindow(appId) {
                 const app = apps[appId];
                 if (!app) return;
@@ -1001,8 +1282,8 @@
                 win.id = winId;
                 win.style.top = `${50 + (windowCount * 20)}px`;
                 win.style.left = `${50 + (windowCount * 20)}px`;
-                win.style.width = '600px';
-                win.style.height = '400px';
+                win.style.width = appId === 'settings' ? '500px' : '600px';
+                win.style.height = appId === 'settings' ? '500px' : '400px';
 
                 const titleBar = document.createElement('div');
                 titleBar.className = 'title-bar';
@@ -1040,11 +1321,20 @@
                 
                 const controls = document.createElement('div');
                 controls.className = 'window-controls';
-                controls.innerHTML = `
-                    <span class="minimize">_</span>
-                    <span class="maximize">□</span>
-                    <span class="close">×</span>
-                `;
+                
+                if (appId === 'settings') {
+                    // No maximize button for settings
+                    controls.innerHTML = `
+                        <span class="minimize">_</span>
+                        <span class="close">×</span>
+                    `;
+                } else {
+                    controls.innerHTML = `
+                        <span class="minimize">_</span>
+                        <span class="maximize">□</span>
+                        <span class="close">×</span>
+                    `;
+                }
                 titleBar.appendChild(controls);
 
                 const content = document.createElement('div');
@@ -1327,6 +1617,8 @@
                     createRadioWindow(content);
                 } else if (appId === 'unknown') {
                     createUnknownWindow(content);
+                } else if (appId === 'settings') {
+                    createSettingsWindow(content);
                 } else {
                     const iframe = document.createElement('iframe');
                     iframe.src = app.url;
@@ -1409,6 +1701,9 @@
                     if (win.titleInterval) {
                         clearInterval(win.titleInterval);
                     }
+                    if (win.taskInterval) {
+                        clearInterval(win.taskInterval);
+                    }
                     win.remove();
                     const taskItem = document.getElementById(`task-${winId}`);
                     if (taskItem) taskItem.remove();
@@ -1418,9 +1713,11 @@
                     win.style.display = 'none';
                 });
 
-                maximizeBtn.addEventListener('click', () => {
-                    win.classList.toggle('maximized');
-                });
+                if (maximizeBtn) {
+                    maximizeBtn.addEventListener('click', () => {
+                        win.classList.toggle('maximized');
+                    });
+                }
 
                 const taskItem = document.createElement('div');
                 taskItem.className = 'taskbar-app';
@@ -1516,4 +1813,4 @@
         <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999;"></div>
     </noscript>
 </body>
-            </html>
+    </html>
