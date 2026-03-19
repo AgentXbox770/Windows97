@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 97</title>
+    <meta name="title" content="Windows 97">
+    <meta name="description" content="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <meta property="og:title" content="Windows97">
+    <meta property="og:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Windows97">
+    <meta name="twitter:description" content="oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi">
+    <style>
+        @font-face {
+            font-family: 'Windows Retro';
+            src: url('retro.ttf') format('truetype');
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            user-select: none;
+            cursor: url('arrow.cur'), default;
+        }
+        body {
+            background: #000000;
+            font-family: 'Windows Retro', 'MS Sans Serif', 'Segoe UI', 'Arial', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #top-left-area {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #useragent-display {
+            color: #c0c0c0;
+            font-size: 18px;
+            font-family: 'Windows Retro', 'MS Sans Serif', monospace;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        #click-text {
+            color: #c0c0c0;
+            font-size: 22px;
+            cursor: pointer;
+            text-decoration: underline dotted #808080;
+            display: none;
+            width: fit-content;
+        }
+        #click-text:hover {
+            color: #ffffff;
+            text-decoration: underline solid #ffffff;
+        }
+
+        #logo-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 150;
+            display: none;
+            background: transparent;
+        }
+        #logo-container img {
+            display: block;
+            max-width: 80vw;
+            max-height: 70vh;
+            image-rendering: pixelated;
+        }
+
+        #wallpaper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: none;
+            z-index: 50;
+        }
+        #wallpaper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        #taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #c0c0c0;
+            border-top: 4px solid #f0f0f0;
+            border-bottom: 4px solid #808080;
+            display: none;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 1000;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+        .start-btn {
+            display: flex;
+            align-items: center;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 12px 4px 6px;
+            height: 38px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 22px;
+            color: #000;
+            margin-right: 12px;
+            position: relative;
+        }
+        .start-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .start-btn img {
+            width: 30px;
+            height: 30px;
+            margin-right: 6px;
+            image-rendering: pixelated;
+        }
+        .taskbar-divider {
+            width: 4px;
+            height: 40px;
+            background: #808080;
+            border-left: 2px solid #f0f0f0;
+            border-right: 2px solid #404040;
+            margin: 0 4px;
+        }
+        #taskbar-apps {
+            display: flex;
+            gap: 4px;
+            height: 100%;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .taskbar-app {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 12px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+            max-width: 150px;
+        }
+        .taskbar-app:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .taskbar-app img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+        .taskbar-clock {
+            margin-left: auto;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 6px 16px;
+            font-size: 20px;
+            color: #000;
+            height: 38px;
+            display: flex;
+            align-items: center;
+        }
+
+        #start-menu {
+            position: absolute;
+            bottom: 54px;
+            left: 4px;
+            width: 300px;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 6px;
+            display: none;
+            z-index: 2000;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+        
+        .start-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            margin-bottom: 4px;
+            background: #000080;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .page-indicator {
+            font-size: 12px;
+        }
+        
+        .arrow-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .arrow-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .arrow-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #808080 #808080 #808080 #808080;
+        }
+        
+        .start-menu-page {
+            display: none;
+        }
+        
+        .start-menu-page.active {
+            display: block;
+        }
+        
+        .start-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            color: #000;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 16px;
+        }
+        .start-menu-item:hover {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .start-menu-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .window {
+            position: absolute;
+            min-width: 400px;
+            min-height: 300px;
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: none;
+            flex-direction: column;
+            z-index: 500;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+        }
+        .window.active {
+            z-index: 1500;
+        }
+        .window.maximized {
+            width: 100% !important;
+            height: calc(100% - 50px) !important;
+            top: 0 !important;
+            left: 0 !important;
+            resize: none !important;
+        }
+        .title-bar {
+            background: linear-gradient(90deg, #FFA500, #0000FF);
+            color: #ffffff;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            cursor: grab;
+            font-size: 18px;
+            text-shadow: 1px 1px 0 #000;
+        }
+        .title-bar:active {
+            cursor: grabbing;
+        }
+        .title-bar img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            object-fit: contain;
+            filter: drop-shadow(1px 1px 0 #000);
+        }
+        .title-text {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffffff;
+        }
+        .window-controls {
+            display: flex;
+            gap: 4px;
+        }
+        .window-controls span {
+            width: 24px;
+            height: 24px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            line-height: 1;
+            font-family: 'Courier New', monospace;
+        }
+        .window-controls span:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .window-controls span.close {
+            font-size: 20px;
+            font-weight: normal;
+            transform: scale(1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .window-content {
+            flex-grow: 1;
+            background: #c0c0c0;
+            margin: 4px;
+            border: 2px solid #808080;
+            overflow: auto;
+            position: relative;
+        }
+        .window-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+        }
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #c0c0c0;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            cursor: nwse-resize;
+            z-index: 10;
+        }
+
+        .calc-button {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 10px;
+            font-size: 18px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+        }
+        .calc-button:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .calc-button.zero {
+            grid-column: span 2;
+        }
+        .calc-display {
+            background: #ffffff;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 10px;
+            font-size: 24px;
+            font-family: 'Windows Retro', 'MS Sans Serif', monospace;
+            text-align: right;
+            color: #000;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Windows 98 Dropdown Styles */
+        .win98-select {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 8px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            color: #000;
+            cursor: pointer;
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+        }
+        
+        .win98-select:focus {
+            outline: none;
+        }
+        
+        .win98-select option {
+            background: #c0c0c0;
+            color: #000;
+            padding: 4px;
+        }
+        
+        .win98-label {
+            color: #000;
+            font-size: 12px;
+            margin-bottom: 2px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+
+        .spectrum-container {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            margin: 8px;
+            border: 2px solid #808080;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .spectrum-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #000;
+        }
+
+        .camera-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        
+        .camera-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .camera-message {
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+        }
+
+        /* Shaking text animation */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        .shaking {
+            animation: shake 0.1s infinite;
+        }
+
+        .static-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        /* Settings App Styles */
+        .settings-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #c0c0c0;
+            padding: 10px;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            gap: 2px;
+            border-bottom: 2px solid #808080;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .settings-tab {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 5px 15px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            color: #000;
+        }
+        
+        .settings-tab.active {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #000080 #000080 #ffffff;
+        }
+        
+        .settings-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .preview-square {
+            width: 100%;
+            height: 150px;
+            background: #000;
+            border: 4px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .wallpaper-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 5px;
+            border: 2px solid #808080;
+            background: #ffffff;
+        }
+        
+        .wallpaper-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+            color: #000;
+        }
+        
+        .wallpaper-item.selected {
+            background: #000080;
+            color: #ffffff;
+            border-color: #ffffff #000080 #000080 #ffffff;
+        }
+        
+        .wallpaper-item.selected span {
+            color: #ffffff;
+        }
+        
+        .wallpaper-item img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        
+        .upload-btn {
+            background: #c0c0c0;
+            border: 4px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 8px;
+            font-family: 'Windows Retro', 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #000;
+        }
+        
+        .upload-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        
+        .theme-section {
+            margin-top: 10px;
+        }
+        
+        .theme-label {
+            color: #000;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        /* Language Panel Styles */
+        .language-panel {
+            padding: 5px;
+        }
+        
+        .language-select-container {
+            margin-bottom: 15px;
+        }
+        
+        .language-preview {
+            background: #ffffff;
+            border: 2px solid #808080;
+            padding: 10px;
+            margin-top: 10px;
+            color: #000;
+            font-size: 14px;
+        }
+        
+        .language-preview-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #000080;
+        }
+
+        /* Theme styles */
+        body.theme-dark {
+            background: #1a1a1a;
+        }
+        
+        body.theme-dark #taskbar {
+            background: #2d2d2d;
+            border-color: #4d4d4d #1a1a1a #1a1a1a #4d4d4d;
+        }
+        
+        body.theme-dark .start-btn,
+        body.theme-dark .taskbar-app,
+        body.theme-dark .taskbar-clock {
+            background: #2d2d2d;
+            border-color: #4d4d4d #1a1a1a #1a1a1a #4d4d4d;
+            color: #fff;
+        }
+        
+        body.theme-dark #start-menu {
+            background: #2d2d2d;
+            border-color: #4d4d4d #1a1a1a #1a1a1a #4d4d4d;
+        }
+        
+        body.theme-dark .start-menu-item {
+            color: #fff;
+        }
+        
+        body.theme-dark .start-menu-header {
+            background: #1a4d4d;
+        }
+        
+        body.theme-dark .window {
+            background: #2d2d2d;
+            border-color: #4d4d4d #1a1a1a #1a1a1a #4d4d4d;
+        }
+        
+        body.theme-dark .window-content {
+            background: #2d2d2d;
+        }
+        
+        body.theme-matrix {
+            background: #000;
+        }
+        
+        body.theme-matrix #taskbar {
+            background: #0a0a0a;
+            border-color: #0f0 #0f0 #0f0 #0f0;
+        }
+        
+        body.theme-matrix .start-btn,
+        body.theme-matrix .taskbar-app,
+        body.theme-matrix .taskbar-clock {
+            background: #0a0a0a;
+            border-color: #0f0 #0f0 #0f0 #0f0;
+            color: #0f0;
+        }
+        
+        body.theme-matrix #start-menu {
+            background: #0a0a0a;
+            border-color: #0f0 #0f0 #0f0 #0f0;
+        }
+        
+        body.theme-matrix .start-menu-item {
+            color: #0f0;
+        }
+        
+        body.theme-matrix .start-menu-header {
+            background: #0a0a0a;
+            border-color: #0f0 #0f0 #0f0 #0f0;
+            color: #0f0;
+        }
+        
+        body.theme-matrix .window {
+            background: #0a0a0a;
+            border-color: #0f0 #0f0 #0f0 #0f0;
+        }
+        
+        body.theme-matrix .window-content {
+            background: #0a0a0a;
+        }
+
+        #desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .window, #start-menu, #taskbar, .start-btn {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="top-left-area">
+        <div id="useragent-display"></div>
+        <div id="click-text">Click to start Windows 97</div>
+    </div>
+    <div id="logo-container">
+        <img src="logo.png" alt="Windows 97 logo">
+    </div>
+    <div id="wallpaper">
+        <img src="wallpaper.png" alt="wallpaper">
+    </div>
+
+    <div id="desktop"></div>
+
+    <div id="taskbar">
+        <div class="start-btn">
+            <img src="pixel_logo.png" alt="win logo"> Start
+        </div>
+        <div class="taskbar-divider"></div>
+        <div id="taskbar-apps"></div>
+        <div class="taskbar-clock" id="clock">--:-- --</div>
+    </div>
+
+    <div id="start-menu">
+        <div class="start-menu-header">
+            <span class="page-indicator" id="page-indicator">Page 1/2</span>
+            <div style="display: flex; gap: 4px;">
+                <div class="arrow-btn" id="prev-page">◀</div>
+                <div class="arrow-btn" id="next-page">▶</div>
+            </div>
+        </div>
+        
+        <!-- Page 1 -->
+        <div class="start-menu-page active" id="page1">
+            <div class="start-menu-item" data-app="ie">
+                <img src="ie.png" alt="IE"> Internet Explorer
+            </div>
+            <div class="start-menu-item" data-app="calc">
+                <img src="calc.png" alt="Calc"> Calculator
+            </div>
+            <div class="start-menu-item" data-app="paint">
+                <img src="paint.png" alt="Paint"> Paint
+            </div>
+            <div class="start-menu-item" data-app="python">
+                <img src="python.png" alt="Python"> Python
+            </div>
+            <div class="start-menu-item" data-app="bryanchat">
+                <img src="bryanchat.png" alt="BryanChat"> BryanChat
+            </div>
+            <div class="start-menu-item" data-app="solitaire">
+                <img src="solitaire.png" alt="Solitaire"> Solitaire
+            </div>
+            <div class="start-menu-item" data-app="netflix">
+                <img src="netflix.png" alt="Netflix"> Netflix
+            </div>
+            <div class="start-menu-item" data-app="windows96">
+                <img src="windows96.png" alt="Windows 96"> Windows 96
+            </div>
+            <div class="start-menu-item" data-app="matrix">
+                <img src="matrix.png" alt="Matrix"> Matrix
+            </div>
+            <div class="start-menu-item" data-app="dvd">
+                <img src="dvd.png" alt="DVD Video"> DVD Video
+            </div>
+            <div class="start-menu-item" data-app="earth">
+                <img src="earth.gif" alt="Earth"> Earth
+            </div>
+            <div class="start-menu-item" data-app="pointer">
+                <img src="pointer.png" alt="Pointer"> Pointer Pointer
+            </div>
+            <div class="start-menu-item" data-app="minecraft">
+                <img src="minecraft.png" alt="Minecraft"> Minecraft
+            </div>
+        </div>
+        
+        <!-- Page 2 -->
+        <div class="start-menu-page" id="page2">
+            <div class="start-menu-item" data-app="pong">
+                <img src="pong.png" alt="Pong"> Pong
+            </div>
+            <div class="start-menu-item" data-app="aol">
+                <img src="aol.png" alt="AOL"> AOL
+            </div>
+            <div class="start-menu-item" data-app="netscape">
+                <img src="netscape.gif" alt="Netscape"> Netscape
+            </div>
+            <div class="start-menu-item" data-app="midiano">
+                <img src="midiano.png" alt="Midiano"> Midiano
+            </div>
+            <div class="start-menu-item" data-app="camera">
+                <img src="camera.png" alt="Camera"> Camera
+            </div>
+            <div class="start-menu-item" data-app="unknown">
+                <div style="width:28px;height:28px;background:#000;border:2px solid #808080;"></div> <span class="unknown-title" style="color:#000;">=π|√|÷π||</span>
+            </div>
+            <div class="start-menu-item" data-app="settings">
+                <img src="settings.png" alt="Settings"> Settings
+            </div>
+            <div class="start-menu-item" data-app="msdos">
+                <img src="msdos.png" alt="MS-DOS"> MS-DOS
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const uaDiv = document.getElementById('useragent-display');
+            uaDiv.textContent = navigator.userAgent;
+
+            const clickText = document.getElementById('click-text');
+            const topLeftArea = document.getElementById('top-left-area');
+            const logoContainer = document.getElementById('logo-container');
+            const wallpaperDiv = document.getElementById('wallpaper');
+            const wallpaperImg = wallpaperDiv.querySelector('img');
+            const taskbarDiv = document.getElementById('taskbar');
+            const body = document.body;
+
+            // Language translations (simplified - using browser's navigator.language as base)
+            const languages = {
+                'en': { name: 'English', code: 'en', hello: 'Hello', settings: 'Settings', start: 'Start', clock: 'Clock' },
+                'es': { name: 'Español', code: 'es', hello: 'Hola', settings: 'Ajustes', start: 'Inicio', clock: 'Reloj' },
+                'fr': { name: 'Français', code: 'fr', hello: 'Bonjour', settings: 'Paramètres', start: 'Démarrer', clock: 'Horloge' },
+                'de': { name: 'Deutsch', code: 'de', hello: 'Hallo', settings: 'Einstellungen', start: 'Start', clock: 'Uhr' },
+                'it': { name: 'Italiano', code: 'it', hello: 'Ciao', settings: 'Impostazioni', start: 'Avvia', clock: 'Orologio' },
+                'pt': { name: 'Português', code: 'pt', hello: 'Olá', settings: 'Configurações', start: 'Iniciar', clock: 'Relógio' },
+                'ru': { name: 'Русский', code: 'ru', hello: 'Привет', settings: 'Настройки', start: 'Пуск', clock: 'Часы' },
+                'ja': { name: '日本語', code: 'ja', hello: 'こんにちは', settings: '設定', start: 'スタート', clock: '時計' },
+                'ko': { name: '한국어', code: 'ko', hello: '안녕하세요', settings: '설정', start: '시작', clock: '시계' },
+                'zh': { name: '中文', code: 'zh', hello: '你好', settings: '设置', start: '开始', clock: '时钟' },
+                'ar': { name: 'العربية', code: 'ar', hello: 'مرحبا', settings: 'الإعدادات', start: 'ابدأ', clock: 'الساعة' },
+                'hi': { name: 'हिन्दी', code: 'hi', hello: 'नमस्ते', settings: 'सेटिंग्स', start: 'प्रारंभ', clock: 'घड़ी' },
+                'bn': { name: 'বাংলা', code: 'bn', hello: 'হ্যালো', settings: 'সেটিংস', start: 'শুরু', clock: 'ঘড়ি' },
+                'pa': { name: 'ਪੰਜਾਬੀ', code: 'pa', hello: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ', settings: 'ਸੈਟਿੰਗਾਂ', start: 'ਸ਼ੁਰੂ', clock: 'ਘੜੀ' },
+                'ta': { name: 'தமிழ்', code: 'ta', hello: 'வணக்கம்', settings: 'அமைப்புகள்', start: 'தொடங்கு', clock: 'கடிகாரம்' },
+                'te': { name: 'తెలుగు', code: 'te', hello: 'నమస్కారం', settings: 'సెట్టింగ్లు', start: 'ప్రారంభించు', clock: 'గడియారం' },
+                'mr': { name: 'मराठी', code: 'mr', hello: 'नमस्कार', settings: 'सेटिंग्ज', start: 'सुरू करा', clock: 'घड्याळ' },
+                'gu': { name: 'ગુજરાતી', code: 'gu', hello: 'નમસ્તે', settings: 'સેટિંગ્સ', start: 'શરૂ કરો', clock: 'ઘડિયાળ' },
+                'kn': { name: 'ಕನ್ನಡ', code: 'kn', hello: 'ನಮಸ್ಕಾರ', settings: 'ಸೆಟ್ಟಿಂಗ್ಗಳು', start: 'ಪ್ರಾರಂಭಿಸಿ', clock: 'ಗಡಿಯಾರ' },
+                'ml': { name: 'മലയാളം', code: 'ml', hello: 'നമസ്കാരം', settings: 'ക്രമീകരണങ്ങൾ', start: 'ആരംഭിക്കുക', clock: 'ക്ലോക്ക്' },
+                'th': { name: 'ไทย', code: 'th', hello: 'สวัสดี', settings: 'การตั้งค่า', start: 'เริ่ม', clock: 'นาฬิกา' },
+                'vi': { name: 'Tiếng Việt', code: 'vi', hello: 'Xin chào', settings: 'Cài đặt', start: 'Bắt đầu', clock: 'Đồng hồ' },
+                'id': { name: 'Bahasa Indonesia', code: 'id', hello: 'Halo', settings: 'Pengaturan', start: 'Mulai', clock: 'Jam' },
+                'ms': { name: 'Bahasa Melayu', code: 'ms', hello: 'Hai', settings: 'Tetapan', start: 'Mula', clock: 'Jam' },
+                'tl': { name: 'Tagalog', code: 'tl', hello: 'Kumusta', settings: 'Mga Setting', start: 'Simulan', clock: 'Orasan' },
+                'sw': { name: 'Kiswahili', code: 'sw', hello: 'Hujambo', settings: 'Mipangilio', start: 'Anza', clock: 'Saa' },
+                'zu': { name: 'isiZulu', code: 'zu', hello: 'Sawubona', settings: 'Izilungiselelo', start: 'Qala', clock: 'Iwashi' },
+                'xh': { name: 'isiXhosa', code: 'xh', hello: 'Molo', settings: 'Useto', start: 'Qala', clock: 'Iwotshi' },
+                'af': { name: 'Afrikaans', code: 'af', hello: 'Hallo', settings: 'Instellings', start: 'Begin', clock: 'Horlosie' },
+                'nl': { name: 'Nederlands', code: 'nl', hello: 'Hallo', settings: 'Instellingen', start: 'Start', clock: 'Klok' }
+            };
+
+            // Function to update UI based on selected language
+            function updateLanguage(langCode) {
+                const lang = languages[langCode] || languages['en'];
+                console.log(`Language set to: ${lang.name}`);
+                localStorage.setItem('win97_language', langCode);
+            }
+
+            setTimeout(() => {
+                clickText.style.display = 'block';
+            }, 3000);
+
+            clickText.addEventListener('click', function startSequence() {
+                topLeftArea.style.display = 'none';
+                logoContainer.style.display = 'block';
+
+                setTimeout(() => {
+                    logoContainer.style.display = 'none';
+                    wallpaperDiv.style.display = 'block';
+                    taskbarDiv.style.display = 'flex';
+                    
+                    // Load saved wallpaper and theme
+                    const savedWallpaper = localStorage.getItem('win97_wallpaper');
+                    const savedTheme = localStorage.getItem('win97_theme');
+                    const savedLanguage = localStorage.getItem('win97_language') || 'en';
+                    
+                    if (savedWallpaper) {
+                        wallpaperImg.src = savedWallpaper;
+                    }
+                    
+                    if (savedTheme) {
+                        body.classList.add(`theme-${savedTheme.toLowerCase()}`);
+                    }
+                    
+                    // Apply saved language
+                    updateLanguage(savedLanguage);
+                }, 5000);
+            }, { once: true });
+
+            const clockEl = document.getElementById('clock');
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                clockEl.textContent = `${hours}:${minutes} ${ampm}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            const startBtn = document.querySelector('.start-btn');
+            const startMenu = document.getElementById('start-menu');
+            
+            startBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!startBtn.contains(e.target) && !startMenu.contains(e.target)) {
+                    startMenu.style.display = 'none';
+                }
+            });
+
+            // Page navigation
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            const pageIndicator = document.getElementById('page-indicator');
+            
+            let currentPage = 1;
+            
+            function updatePages() {
+                if (currentPage === 1) {
+                    page1.classList.add('active');
+                    page2.classList.remove('active');
+                    prevBtn.classList.add('disabled');
+                    nextBtn.classList.remove('disabled');
+                    pageIndicator.textContent = 'Page 1/2';
+                } else {
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                    prevBtn.classList.remove('disabled');
+                    nextBtn.classList.add('disabled');
+                    pageIndicator.textContent = 'Page 2/2';
+                }
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePages();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < 2) {
+                    currentPage++;
+                    updatePages();
+                }
+            });
+            
+            updatePages();
+
+            // Unknown app titles that change every 0.2 seconds
+            const unknownTitles = [
+                '=π|√|÷π||',
+                '=¥™¥=¥°¥=`',
+                '=|^|{π`=|^',
+                '✓®%™^%|✓©',
+                'shszjsdheh',
+                '+€-3_€!&€7-',
+                'bdhdhBh+_-€-_+-=°$|=°¥✓¥'
+            ];
+
+            // Update the start menu title every 0.2 seconds
+            const unknownTitleSpan = document.querySelector('.unknown-title');
+            if (unknownTitleSpan) {
+                let titleIndex = 0;
+                setInterval(() => {
+                    unknownTitleSpan.textContent = unknownTitles[titleIndex % unknownTitles.length];
+                    titleIndex++;
+                }, 200);
+            }
+
+            // Wallpaper list for settings
+            const wallpaperList = [
+                { name: 'wallpaper.png (default)', file: 'wallpaper.png' },
+                { name: 'shutdown.png', file: 'shutdown.png' },
+                { name: 'msdos.png', file: 'msdos.png' },
+                { name: 'bliss.png', file: 'bliss.png' },
+                { name: 'bliss_cooler.png', file: 'bliss_cooler.png' },
+                { name: 'space.png', file: 'space.png' },
+                { name: 'coding.png', file: 'coding.png' },
+                { name: 'js.png', file: 'js.png' }
+            ];
+
+            const apps = {
+                ie: { name: 'Internet Explorer', icon: 'ie.png', url: 'https://www.google.com' },
+                calc: { name: 'Calculator', icon: 'calc.png', url: 'about:blank' },
+                paint: { name: 'Paint', icon: 'paint.png', url: 'https://jspaint.app' },
+                python: { name: 'Python', icon: 'python.png', url: 'https://www.python.org' },
+                bryanchat: { name: 'BryanChat', icon: 'bryanchat.png', url: 'bryanchat.html' },
+                solitaire: { name: 'Solitaire', icon: 'solitaire.png', url: 'https://khang-nd.github.io/js-solitaire/' },
+                netflix: { name: 'Netflix', icon: 'netflix.png', url: 'https://www.netflix.com' },
+                windows96: { name: 'Windows 96', icon: 'windows96.png', url: 'https://windows96.net' },
+                matrix: { name: 'Matrix', icon: 'matrix.png', url: 'https://thematrix.webexpt.com/' },
+                dvd: { name: 'DVD Video', icon: 'dvd.png', url: 'https://bouncingdvdlogo.com' },
+                earth: { name: 'Earth', icon: 'earth.gif', url: 'https://sararasoulian.github.io/3D-Earth/' },
+                pointer: { name: 'Pointer Pointer', icon: 'pointer.png', url: 'https://pointerpointer.com' },
+                minecraft: { name: 'Minecraft', icon: 'minecraft.png', url: 'https://eaglercraft1-8.github.io/' },
+                pong: { name: 'Pong', icon: 'pong.png', url: 'pong.html' },
+                aol: { name: 'AOL', icon: 'aol.png', url: 'aol-bye.png' },
+                netscape: { name: 'Netscape', icon: 'netscape.gif', url: 'https://isp.netscape.com/' },
+                midiano: { name: 'Midiano', icon: 'midiano.png', url: 'https://app.midiano.com/' },
+                camera: { name: 'Camera', icon: 'camera.png', url: 'camera' },
+                unknown: { name: '=π|√|÷π||', icon: null, url: 'unknown' },
+                settings: { name: 'Settings', icon: 'settings.png', url: 'settings' },
+                msdos: { name: 'MS-DOS', icon: 'msdos.png', url: 'msdos' }
+            };
+
+            let windowCount = 0;
+            const taskbarApps = document.getElementById('taskbar-apps');
+            const desktop = document.getElementById('desktop');
+            let windows = [];
+
+            function createCameraWindow(content) {
+                const cameraContainer = document.createElement('div');
+                cameraContainer.className = 'camera-container';
+                
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        const video = document.createElement('video');
+                        video.className = 'camera-video';
+                        video.srcObject = stream;
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        cameraContainer.innerHTML = '';
+                        cameraContainer.appendChild(video);
+                    })
+                    .catch(() => {
+                        const message = document.createElement('div');
+                        message.className = 'camera-message';
+                        message.textContent = 'Please allow permission for Camera.';
+                        cameraContainer.appendChild(message);
+                    });
+                
+                content.appendChild(cameraContainer);
+            }
+
+            function createUnknownWindow(content) {
+                // Play static sound
+                try {
+                    const audio = new Audio('static.mp3');
+                    audio.loop = true;
+                    audio.play().catch(() => {});
+                    
+                    // Store audio on window to stop when closed
+                    content.unknownAudio = audio;
+                } catch (e) {}
+                
+                const img = document.createElement('img');
+                img.src = 'static.gif';
+                img.className = 'static-img';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                content.appendChild(img);
+            }
+
+            function createMSDOSWindow(content) {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'https://archive.org/embed/msdos_shareware_fb_FPROT116';
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.style.border = 'none';
+                iframe.setAttribute('webkitallowfullscreen', 'true');
+                iframe.setAttribute('mozallowfullscreen', 'true');
+                iframe.setAttribute('allowfullscreen', 'true');
+                content.appendChild(iframe);
+            }
+
+            function createSettingsWindow(content) {
+                const container = document.createElement('div');
+                container.className = 'settings-container';
+                
+                // Tabs
+                const tabs = document.createElement('div');
+                tabs.className = 'settings-tabs';
+                
+                const personalizationTab = document.createElement('div');
+                personalizationTab.className = 'settings-tab active';
+                personalizationTab.textContent = 'Personalization';
+                personalizationTab.dataset.tab = 'personalization';
+                
+                const languageTab = document.createElement('div');
+                languageTab.className = 'settings-tab';
+                languageTab.textContent = 'Language';
+                languageTab.dataset.tab = 'language';
+                
+                tabs.appendChild(personalizationTab);
+                tabs.appendChild(languageTab);
+                container.appendChild(tabs);
+                
+                // Panels container
+                const panelsContainer = document.createElement('div');
+                panelsContainer.className = 'settings-panel';
+                
+                // Personalization Panel
+                const personalizationPanel = document.createElement('div');
+                personalizationPanel.id = 'personalization-panel';
+                personalizationPanel.style.display = 'block';
+                
+                // Preview square
+                const previewSquare = document.createElement('div');
+                previewSquare.className = 'preview-square';
+                
+                const previewImg = document.createElement('img');
+                previewImg.className = 'preview-image';
+                previewImg.src = wallpaperImg.src;
+                previewSquare.appendChild(previewImg);
+                personalizationPanel.appendChild(previewSquare);
+                
+                // Wallpaper list
+                const wallpaperListDiv = document.createElement('div');
+                wallpaperListDiv.className = 'wallpaper-list';
+                
+                wallpaperList.forEach((wallpaper) => {
+                    const item = document.createElement('div');
+                    item.className = 'wallpaper-item';
+                    if (wallpaperImg.src.includes(wallpaper.file)) {
+                        item.classList.add('selected');
+                    }
+                    
+                    const icon = document.createElement('img');
+                    icon.src = 'picture.png';
+                    icon.alt = '';
+                    
+                    const name = document.createElement('span');
+                    name.textContent = wallpaper.name;
+                    
+                    item.appendChild(icon);
+                    item.appendChild(name);
+                    
+                    item.addEventListener('click', () => {
+                        document.querySelectorAll('.wallpaper-item').forEach(w => {
+                            w.classList.remove('selected');
+                        });
+                        item.classList.add('selected');
+                        previewImg.src = wallpaper.file;
+                        wallpaperImg.src = wallpaper.file;
+                        localStorage.setItem('win97_wallpaper', wallpaper.file);
+                    });
+                    
+                    wallpaperListDiv.appendChild(item);
+                });
+                
+                personalizationPanel.appendChild(wallpaperListDiv);
+                
+                // Upload button
+                const uploadBtn = document.createElement('div');
+                uploadBtn.className = 'upload-btn';
+                uploadBtn.textContent = 'Upload Image';
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+                
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            previewImg.src = event.target.result;
+                            wallpaperImg.src = event.target.result;
+                            localStorage.setItem('win97_wallpaper', event.target.result);
+                            
+                            document.querySelectorAll('.wallpaper-item').forEach(w => {
+                                w.classList.remove('selected');
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                uploadBtn.addEventListener('click', () => {
+                    fileInput.click();
+                });
+                
+                personalizationPanel.appendChild(uploadBtn);
+                personalizationPanel.appendChild(fileInput);
+                
+                // Theme section
+                const themeSection = document.createElement('div');
+                themeSection.className = 'theme-section';
+                
+                const themeLabel = document.createElement('div');
+                themeLabel.className = 'theme-label';
+                themeLabel.textContent = 'Theme:';
+                
+                const themeSelect = document.createElement('select');
+                themeSelect.className = 'win98-select';
+                themeSelect.innerHTML = `
+                    <option value="Default">Default</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Matrix">Matrix</option>
+                `;
+                
+                const savedTheme = localStorage.getItem('win97_theme') || 'Default';
+                themeSelect.value = savedTheme;
+                
+                themeSelect.addEventListener('change', () => {
+                    const theme = themeSelect.value;
+                    localStorage.setItem('win97_theme', theme);
+                    
+                    // Remove existing theme classes
+                    body.classList.remove('theme-dark', 'theme-matrix');
+                    
+                    // Add new theme class if not default
+                    if (theme !== 'Default') {
+                        body.classList.add(`theme-${theme.toLowerCase()}`);
+                    }
+                });
+                
+                themeSection.appendChild(themeLabel);
+                themeSection.appendChild(themeSelect);
+                personalizationPanel.appendChild(themeSection);
+                
+                // Language Panel
+                const languagePanel = document.createElement('div');
+                languagePanel.id = 'language-panel';
+                languagePanel.style.display = 'none';
+                languagePanel.className = 'language-panel';
+                
+                const languageSelectContainer = document.createElement('div');
+                languageSelectContainer.className = 'language-select-container';
+                
+                const languageLabel = document.createElement('div');
+                languageLabel.className = 'win98-label';
+                languageLabel.textContent = 'Select Language:';
+                
+                const languageSelect = document.createElement('select');
+                languageSelect.className = 'win98-select';
+                
+                // Add all languages to select
+                Object.values(languages).forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang.code;
+                    option.textContent = lang.name;
+                    languageSelect.appendChild(option);
+                });
+                
+                const savedLanguage = localStorage.getItem('win97_language') || 'en';
+                languageSelect.value = savedLanguage;
+                
+                // Preview area
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'language-preview';
+                
+                const previewTitle = document.createElement('div');
+                previewTitle.className = 'language-preview-title';
+                previewTitle.textContent = 'Preview:';
+                
+                const previewText = document.createElement('div');
+                previewText.id = 'language-preview-text';
+                
+                previewDiv.appendChild(previewTitle);
+                previewDiv.appendChild(previewText);
+                
+                // Update preview when language changes
+                function updateLanguagePreview(langCode) {
+                    const lang = languages[langCode] || languages['en'];
+                    previewText.innerHTML = `
+                        <b>${lang.hello}!</b><br>
+                        ${lang.settings} > ${lang.start}<br>
+                        ${lang.clock}: 12:34 PM
+                    `;
+                }
+                
+                updateLanguagePreview(savedLanguage);
+                
+                languageSelect.addEventListener('change', () => {
+                    const selectedLang = languageSelect.value;
+                    localStorage.setItem('win97_language', selectedLang);
+                    updateLanguage(selectedLang);
+                    updateLanguagePreview(selectedLang);
+                });
+                
+                languageSelectContainer.appendChild(languageLabel);
+                languageSelectContainer.appendChild(languageSelect);
+                languagePanel.appendChild(languageSelectContainer);
+                languagePanel.appendChild(previewDiv);
+                
+                panelsContainer.appendChild(personalizationPanel);
+                panelsContainer.appendChild(languagePanel);
+                container.appendChild(panelsContainer);
+                
+                // Tab switching
+                personalizationTab.addEventListener('click', () => {
+                    personalizationTab.classList.add('active');
+                    languageTab.classList.remove('active');
+                    document.getElementById('personalization-panel').style.display = 'block';
+                    document.getElementById('language-panel').style.display = 'none';
+                });
+                
+                languageTab.addEventListener('click', () => {
+                    languageTab.classList.add('active');
+                    personalizationTab.classList.remove('active');
+                    document.getElementById('language-panel').style.display = 'block';
+                    document.getElementById('personalization-panel').style.display = 'none';
+                });
+                
+                content.appendChild(container);
+            }
+
+            function createWindow(appId) {
+                const app = apps[appId];
+                if (!app) return;
+
+                const winId = `win-${windowCount++}`;
+                const win = document.createElement('div');
+                win.className = 'window';
+                win.id = winId;
+                win.style.top = `${50 + (windowCount * 20)}px`;
+                win.style.left = `${50 + (windowCount * 20)}px`;
+                win.style.width = appId === 'settings' ? '500px' : '600px';
+                win.style.height = appId === 'settings' ? '500px' : '400px';
+
+                const titleBar = document.createElement('div');
+                titleBar.className = 'title-bar';
+                
+                // For unknown app, use black square and shaking text that changes
+                if (appId === 'unknown') {
+                    const iconDiv = document.createElement('div');
+                    iconDiv.style.width = '20px';
+                    iconDiv.style.height = '20px';
+                    iconDiv.style.background = '#000';
+                    iconDiv.style.border = '2px solid #808080';
+                    iconDiv.style.marginRight = '8px';
+                    titleBar.appendChild(iconDiv);
+                    
+                    const titleText = document.createElement('span');
+                    titleText.className = 'title-text shaking';
+                    
+                    // Update title every 0.2 seconds
+                    let titleIndex = 0;
+                    const titleInterval = setInterval(() => {
+                        titleText.textContent = unknownTitles[titleIndex % unknownTitles.length];
+                        titleIndex++;
+                    }, 200);
+                    
+                    // Store interval to clear on close
+                    win.titleInterval = titleInterval;
+                    
+                    titleBar.appendChild(titleText);
+                } else {
+                    titleBar.innerHTML = `
+                        <img src="${app.icon}" alt="" onerror="this.style.display='none'">
+                        <span class="title-text">${app.name}</span>
+                    `;
+                }
+                
+                const controls = document.createElement('div');
+                controls.className = 'window-controls';
+                
+                if (appId === 'settings') {
+                    // No maximize button for settings
+                    controls.innerHTML = `
+                        <span class="minimize">_</span>
+                        <span class="close">×</span>
+                    `;
+                } else {
+                    controls.innerHTML = `
+                        <span class="minimize">_</span>
+                        <span class="maximize">□</span>
+                        <span class="close">×</span>
+                    `;
+                }
+                titleBar.appendChild(controls);
+
+                const content = document.createElement('div');
+                content.className = 'window-content';
+                
+                if (appId === 'calc') {
+                    const calcDiv = document.createElement('div');
+                    calcDiv.style.padding = '10px';
+                    calcDiv.style.background = '#c0c0c0';
+                    calcDiv.style.height = '100%';
+                    calcDiv.style.display = 'flex';
+                    calcDiv.style.flexDirection = 'column';
+                    
+                    const display = document.createElement('div');
+                    display.className = 'calc-display';
+                    display.textContent = '0';
+                    calcDiv.appendChild(display);
+                    
+                    const buttonsGrid = document.createElement('div');
+                    buttonsGrid.style.display = 'grid';
+                    buttonsGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+                    buttonsGrid.style.gap = '5px';
+                    buttonsGrid.style.flexGrow = '1';
+                    
+                    const buttons = [
+                        '7', '8', '9', '/',
+                        '4', '5', '6', '*',
+                        '1', '2', '3', '-',
+                        '0', 'C', '=', '+'
+                    ];
+                    
+                    buttons.forEach(btn => {
+                        const button = document.createElement('div');
+                        button.className = 'calc-button';
+                        if (btn === '0') button.classList.add('zero');
+                        button.textContent = btn;
+                        
+                        button.addEventListener('click', () => {
+                            if (btn === 'C') {
+                                display.textContent = '0';
+                            } else if (btn === '=') {
+                                try {
+                                    display.textContent = eval(display.textContent);
+                                } catch {
+                                    display.textContent = 'Error';
+                                }
+                            } else if (btn === '/' || btn === '*' || btn === '-' || btn === '+') {
+                                if (display.textContent !== 'Error') {
+                                    display.textContent += btn;
+                                }
+                            } else {
+                                if (display.textContent === '0' || display.textContent === 'Error') {
+                                    display.textContent = btn;
+                                } else {
+                                    display.textContent += btn;
+                                }
+                            }
+                        });
+                        
+                        buttonsGrid.appendChild(button);
+                    });
+                    
+                    calcDiv.appendChild(buttonsGrid);
+                    content.appendChild(calcDiv);
+                } else if (appId === 'ie') {
+                    const browserDiv = document.createElement('div');
+                    browserDiv.style.height = '100%';
+                    browserDiv.style.display = 'flex';
+                    browserDiv.style.flexDirection = 'column';
+                    
+                    let history = JSON.parse(localStorage.getItem('ie_history')) || ['https://www.google.com'];
+                    let historyIndex = history.length - 1;
+                    
+                    const toolbar = document.createElement('div');
+                    toolbar.style.background = '#c0c0c0';
+                    toolbar.style.padding = '4px';
+                    toolbar.style.borderBottom = '2px solid #808080';
+                    toolbar.style.display = 'flex';
+                    toolbar.style.gap = '4px';
+                    toolbar.style.alignItems = 'center';
+                    toolbar.style.flexWrap = 'wrap';
+                    
+                    const undoBtn = document.createElement('button');
+                    undoBtn.innerHTML = '↩ Undo';
+                    undoBtn.style.background = '#c0c0c0';
+                    undoBtn.style.border = '2px solid';
+                    undoBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    undoBtn.style.padding = '2px 6px';
+                    undoBtn.style.cursor = 'pointer';
+                    undoBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    undoBtn.style.fontSize = '12px';
+                    
+                    const redoBtn = document.createElement('button');
+                    redoBtn.innerHTML = '↪ Redo';
+                    redoBtn.style.background = '#c0c0c0';
+                    redoBtn.style.border = '2px solid';
+                    redoBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    redoBtn.style.padding = '2px 6px';
+                    redoBtn.style.cursor = 'pointer';
+                    redoBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    redoBtn.style.fontSize = '12px';
+                    
+                    const addressLabel = document.createElement('span');
+                    addressLabel.innerHTML = 'Address:';
+                    addressLabel.style.fontFamily = 'Windows Retro, sans-serif';
+                    addressLabel.style.fontSize = '12px';
+                    addressLabel.style.marginLeft = '4px';
+                    
+                    const addressInput = document.createElement('input');
+                    addressInput.type = 'text';
+                    addressInput.value = history[historyIndex];
+                    addressInput.style.flex = '1';
+                    addressInput.style.minWidth = '200px';
+                    addressInput.style.background = '#ffffff';
+                    addressInput.style.border = '2px solid';
+                    addressInput.style.borderColor = '#808080 #ffffff #ffffff #808080';
+                    addressInput.style.padding = '2px 4px';
+                    addressInput.style.fontFamily = 'Windows Retro, sans-serif';
+                    addressInput.style.fontSize = '12px';
+                    
+                    const goBtn = document.createElement('button');
+                    goBtn.innerHTML = 'Go';
+                    goBtn.style.background = '#c0c0c0';
+                    goBtn.style.border = '2px solid';
+                    goBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    goBtn.style.padding = '2px 12px';
+                    goBtn.style.cursor = 'pointer';
+                    goBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    goBtn.style.fontSize = '12px';
+                    
+                    const historyBtn = document.createElement('button');
+                    historyBtn.innerHTML = '📜 History';
+                    historyBtn.style.background = '#c0c0c0';
+                    historyBtn.style.border = '2px solid';
+                    historyBtn.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    historyBtn.style.padding = '2px 8px';
+                    historyBtn.style.cursor = 'pointer';
+                    historyBtn.style.fontFamily = 'Windows Retro, sans-serif';
+                    historyBtn.style.fontSize = '12px';
+                    
+                    toolbar.appendChild(undoBtn);
+                    toolbar.appendChild(redoBtn);
+                    toolbar.appendChild(addressLabel);
+                    toolbar.appendChild(addressInput);
+                    toolbar.appendChild(goBtn);
+                    toolbar.appendChild(historyBtn);
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.src = history[historyIndex];
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation';
+                    iframe.style.flex = '1';
+                    iframe.style.width = '100%';
+                    iframe.style.border = 'none';
+                    iframe.style.background = '#ffffff';
+                    
+                    const historyDropdown = document.createElement('div');
+                    historyDropdown.style.display = 'none';
+                    historyDropdown.style.position = 'absolute';
+                    historyDropdown.style.background = '#c0c0c0';
+                    historyDropdown.style.border = '2px solid';
+                    historyDropdown.style.borderColor = '#ffffff #808080 #808080 #ffffff';
+                    historyDropdown.style.maxHeight = '200px';
+                    historyDropdown.style.overflowY = 'auto';
+                    historyDropdown.style.zIndex = '10000';
+                    historyDropdown.style.width = '300px';
+                    historyDropdown.style.padding = '4px';
+                    
+                    function updateHistoryDropdown() {
+                        historyDropdown.innerHTML = '';
+                        history.slice().reverse().forEach((url, index) => {
+                            const item = document.createElement('div');
+                            item.textContent = url;
+                            item.style.padding = '4px 8px';
+                            item.style.cursor = 'pointer';
+                            item.style.fontFamily = 'Windows Retro, sans-serif';
+                            item.style.fontSize = '12px';
+                            item.style.whiteSpace = 'nowrap';
+                            item.style.overflow = 'hidden';
+                            item.style.textOverflow = 'ellipsis';
+                            item.addEventListener('mouseenter', () => {
+                                item.style.background = '#000080';
+                                item.style.color = '#ffffff';
+                            });
+                            item.addEventListener('mouseleave', () => {
+                                item.style.background = 'transparent';
+                                item.style.color = '#000000';
+                            });
+                            item.addEventListener('click', () => {
+                                const actualIndex = history.length - 1 - index;
+                                historyIndex = actualIndex;
+                                addressInput.value = history[historyIndex];
+                                iframe.src = history[historyIndex];
+                                historyDropdown.style.display = 'none';
+                            });
+                            historyDropdown.appendChild(item);
+                        });
+                    }
+                    updateHistoryDropdown();
+                    
+                    browserDiv.style.position = 'relative';
+                    browserDiv.appendChild(toolbar);
+                    browserDiv.appendChild(iframe);
+                    browserDiv.appendChild(historyDropdown);
+                    
+                    function navigate(url) {
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        iframe.src = url;
+                        addressInput.value = url;
+                        
+                        if (history[history.length - 1] !== url) {
+                            history.push(url);
+                            historyIndex = history.length - 1;
+                            localStorage.setItem('ie_history', JSON.stringify(history));
+                            updateHistoryDropdown();
+                        }
+                    }
+                    
+                    undoBtn.addEventListener('click', () => {
+                        if (historyIndex > 0) {
+                            historyIndex--;
+                            addressInput.value = history[historyIndex];
+                            iframe.src = history[historyIndex];
+                        }
+                    });
+                    
+                    redoBtn.addEventListener('click', () => {
+                        if (historyIndex < history.length - 1) {
+                            historyIndex++;
+                            addressInput.value = history[historyIndex];
+                            iframe.src = history[historyIndex];
+                        }
+                    });
+                    
+                    goBtn.addEventListener('click', () => {
+                        navigate(addressInput.value);
+                    });
+                    
+                    addressInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            navigate(addressInput.value);
+                        }
+                    });
+                    
+                    historyBtn.addEventListener('click', () => {
+                        const rect = historyBtn.getBoundingClientRect();
+                        const winRect = win.getBoundingClientRect();
+                        historyDropdown.style.left = (rect.left - winRect.left) + 'px';
+                        historyDropdown.style.top = (rect.bottom - winRect.top) + 'px';
+                        historyDropdown.style.display = historyDropdown.style.display === 'none' ? 'block' : 'none';
+                    });
+                    
+                    document.addEventListener('click', (e) => {
+                        if (!historyBtn.contains(e.target) && !historyDropdown.contains(e.target)) {
+                            historyDropdown.style.display = 'none';
+                        }
+                    });
+                    
+                    content.appendChild(browserDiv);
+                } else if (appId === 'minecraft') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = 'https://eaglercraft1-8.github.io/';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation';
+                    content.appendChild(iframe);
+                } else if (appId === 'aol') {
+                    const img = document.createElement('img');
+                    img.src = 'aol-bye.png';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    img.style.background = '#000';
+                    content.appendChild(img);
+                } else if (appId === 'camera') {
+                    createCameraWindow(content);
+                } else if (appId === 'unknown') {
+                    createUnknownWindow(content);
+                } else if (appId === 'settings') {
+                    createSettingsWindow(content);
+                } else if (appId === 'msdos') {
+                    createMSDOSWindow(content);
+                } else {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = app.url;
+                    
+                    if (appId === 'python' || appId === 'paint' || appId === 'solitaire' || 
+                        appId === 'netflix' || appId === 'windows96' || appId === 'dvd' || 
+                        appId === 'matrix' || appId === 'earth' || appId === 'pointer' || 
+                        appId === 'pong' || appId === 'midiano' || appId === 'netscape') {
+                        iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation';
+                    }
+                    
+                    content.appendChild(iframe);
+                }
+
+                win.appendChild(titleBar);
+                win.appendChild(content);
+
+                const resizeHandle = document.createElement('div');
+                resizeHandle.className = 'resize-handle';
+                win.appendChild(resizeHandle);
+
+                desktop.appendChild(win);
+                
+                let isDragging = false;
+                let offsetX, offsetY;
+
+                titleBar.addEventListener('mousedown', (e) => {
+                    if (e.target.classList.contains('window-controls') || e.target.parentElement.classList.contains('window-controls')) return;
+                    isDragging = true;
+                    offsetX = e.clientX - win.offsetLeft;
+                    offsetY = e.clientY - win.offsetTop;
+                    win.style.cursor = 'grabbing';
+                    bringToFront(win);
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    let newX = e.clientX - offsetX;
+                    let newY = e.clientY - offsetY;
+                    newX = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newX));
+                    newY = Math.max(0, Math.min(window.innerHeight - 50 - win.offsetHeight, newY));
+                    win.style.left = newX + 'px';
+                    win.style.top = newY + 'px';
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    win.style.cursor = 'default';
+                });
+
+                let isResizing = false;
+                resizeHandle.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    isResizing = true;
+                    bringToFront(win);
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isResizing) return;
+                    const newWidth = e.clientX - win.offsetLeft;
+                    const newHeight = e.clientY - win.offsetTop;
+                    win.style.width = Math.max(300, Math.min(window.innerWidth - win.offsetLeft, newWidth)) + 'px';
+                    win.style.height = Math.max(200, Math.min(window.innerHeight - 50 - win.offsetTop, newHeight)) + 'px';
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isResizing = false;
+                });
+
+                const closeBtn = win.querySelector('.close');
+                const minimizeBtn = win.querySelector('.minimize');
+                const maximizeBtn = win.querySelector('.maximize');
+
+                closeBtn.addEventListener('click', () => {
+                    // Stop unknown audio and interval if playing
+                    if (content.unknownAudio) {
+                        content.unknownAudio.pause();
+                        content.unknownAudio = null;
+                    }
+                    if (win.titleInterval) {
+                        clearInterval(win.titleInterval);
+                    }
+                    if (win.taskInterval) {
+                        clearInterval(win.taskInterval);
+                    }
+                    win.remove();
+                    const taskItem = document.getElementById(`task-${winId}`);
+                    if (taskItem) taskItem.remove();
+                });
+
+                minimizeBtn.addEventListener('click', () => {
+                    win.style.display = 'none';
+                });
+
+                if (maximizeBtn) {
+                    maximizeBtn.addEventListener('click', () => {
+                        win.classList.toggle('maximized');
+                    });
+                }
+
+                const taskItem = document.createElement('div');
+                taskItem.className = 'taskbar-app';
+                taskItem.id = `task-${winId}`;
+                
+                if (appId === 'unknown') {
+                    taskItem.innerHTML = `<div style="width:24px;height:24px;background:#000;border:2px solid #808080;"></div> <span class="taskbar-unknown" style="color:#000;">=π|√|÷π||</span>`;
+                    
+                    // Update taskbar title every 0.2 seconds
+                    let taskTitleIndex = 0;
+                    const taskTitleSpan = taskItem.querySelector('.taskbar-unknown');
+                    if (taskTitleSpan) {
+                        const taskInterval = setInterval(() => {
+                            taskTitleSpan.textContent = unknownTitles[taskTitleIndex % unknownTitles.length];
+                            taskTitleIndex++;
+                        }, 200);
+                        
+                        // Store interval to clear on close
+                        win.taskInterval = taskInterval;
+                    }
+                } else {
+                    taskItem.innerHTML = `<img src="${app.icon}" alt="" onerror="this.style.display='none'"> ${app.name}`;
+                }
+                
+                taskItem.addEventListener('click', () => {
+                    if (win.style.display === 'none') {
+                        win.style.display = 'flex';
+                        bringToFront(win);
+                    } else {
+                        bringToFront(win);
+                    }
+                });
+                taskbarApps.appendChild(taskItem);
+
+                win.style.display = 'flex';
+                bringToFront(win);
+                
+                windows.push(win);
+            }
+
+            function bringToFront(win) {
+                windows.forEach(w => w.classList.remove('active'));
+                win.classList.add('active');
+                win.style.zIndex = 1500 + windows.indexOf(win);
+            }
+
+            document.querySelectorAll('.start-menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const app = item.dataset.app;
+                    createWindow(app);
+                    startMenu.style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('dragstart', (e) => e.preventDefault());
+            });
+        })();
+    </script>
+    
+    <!-- STARTUP SOUND -->
+    <script>
+        (function() {
+            const checkDesktop = setInterval(() => {
+                const wallpaper = document.getElementById('wallpaper');
+                const taskbar = document.getElementById('taskbar');
+                if (wallpaper && taskbar && 
+                    wallpaper.style.display === 'block' && 
+                    taskbar.style.display === 'flex') {
+                    clearInterval(checkDesktop);
+                    new Audio('startup.mp3').play().catch(() => {});
+                }
+            }, 100);
+        })();
+        
+    console.log('⠀⠀⠀⠀⠀⠆⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠐⢀⡙⠴⢖⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠠⠀⠀⠀⣤⠘⢛⢻⣿⣧⣿⣿⣿⣿⣿⣿⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠠⠆⣀⠁⠤⠄⣘⠊⠦⢴⣿⣿⠉⠉⠉⣹⣿⠟⠻⢿⣿⣦⡀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⢀⠉⠤⠄⣈⡘⠐⢡⣿⣿⠇⠀⠀⢠⣿⡏⠀⠀⠀⢸⣿⠁⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⡈⠠⠄⡈⠉⠽⠿⣿⣿⠿⠿⠿⣾⣿⣿⣤⣀⠀⣼⣿⡇⠀⠀⠀⠀⠀');
+    console.log('⠰⠀⠀⠀⠶⠀⠀⠀⠁⢀⣿⣿⠁⠀⠀⢸⣿⠏⠹⢿⣿⣿⡿⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠋⣤⣄⣈⡈⠔⢰⣿⣿⠀⠀⠀⢠⣿⠃⠀⠀⠀⣼⣿⠃⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠘⠛⠿⠿⣿⣿⣿⣿⣷⣶⣿⣇⡀⠀⠀⣼⣿⠃⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠙⠛⠿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀');
+    console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
+    </script>
+
+    <!-- Black screen for noscript -->
+    <noscript>
+        <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999;"></div>
+    </noscript>
+</body>
+  </html> 
