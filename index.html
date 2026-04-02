@@ -2007,21 +2007,6 @@
     console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀');
     </script>
 
-<script>
-(function(){
-const d=new Date();
-if(d.getMonth()===3&&d.getDate()>=1&&d.getDate()<=30){
-const s=document.createElement('style');
-s.textContent='*{transform:rotate(180deg) scaleX(-1);}';
-document.head.appendChild(s);
-const items=Array.from(document.querySelectorAll('.start-menu-item, .taskbar-app, .start-btn, .window-controls span, .title-bar, .calc-button, .wallpaper-item, .settings-tab, .desktop-icons-btn, .upload-btn, .apply-btn, .app-item, .topping-btn, .action-btn, .upgrade-btn'));
-const positions=items.map(el=>({left:el.style.left,top:el.style.top,position:el.style.position}));
-const shuffled=[...items];
-for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
-items.forEach((el,idx)=>{const target=shuffled[idx];const rect=target.getBoundingClientRect();el.style.position='fixed';el.style.left=rect.left+'px';el.style.top=rect.top+'px';el.style.zIndex='9999';});
-}
-})();
-</script>
     <noscript>
         <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:99999;"></div>
     </noscript>
