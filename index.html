@@ -1229,7 +1229,7 @@
                 appchooser: { name: 'App Chooser', icon: 'settings.png', url: 'appchooser' },
                 tts: { name: 'Text-To-Speech', icon: 'tts.png', url: 'tts' },
                 undertale: { name: 'Undertale', icon: 'undertale.png', url: 'https://lelode.github.io/Undertale.html' },
-                universe: { name: 'Universe', icon: 'universe.gif', url: 'universe2.gif' }
+                universe: { name: 'Universe', icon: 'universe.gif', url: 'universe2.mp4' }
             };
 
             let windowCount = 0;
@@ -1989,12 +1989,16 @@
                 } else if (appId === 'tts') {
                     createTTSWindow(content);
                 } else if (appId === 'universe') {
-                    const img = document.createElement('img');
-                    img.src = 'universe2.gif';
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
-                    content.appendChild(img);
+                const video = document.createElement('video');
+                video.src = 'universe2.mp4';
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.objectFit = 'cover';
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = false;
+    video.controls = true;
+    content.appendChild(video);
                 } else {
                     const iframe = document.createElement('iframe');
                     iframe.src = app.url;
